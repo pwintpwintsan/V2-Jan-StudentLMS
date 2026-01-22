@@ -9,12 +9,12 @@ import {
   ShieldCheck,
   Zap,
   Target,
-  Star,
   ChevronRight,
-  Sparkles,
   ClipboardList,
   Calendar,
-  Trophy
+  Check,
+  X as CloseIcon,
+  BookOpen
 } from 'lucide-react';
 
 interface ReportsViewProps {
@@ -35,16 +35,16 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
   const performanceStats = [
     { title: 'Curriculum Mastery', value: '94%', color: 'text-emerald-500', bg: 'bg-emerald-50', icon: Target },
     { title: 'Average Quiz Score', value: '88/100', color: 'text-[#3b82f6]', bg: 'bg-blue-50', icon: Zap },
-    { title: 'Task Completion', value: '100%', color: 'text-[#F05A28]', bg: 'bg-orange-50', icon: CheckCircle },
-    { title: 'Global Star Rank', value: 'Top 5%', color: 'text-amber-500', bg: 'bg-amber-50', icon: Award },
+    { title: 'Overall Marks', value: '482/500', color: 'text-[#F05A28]', bg: 'bg-orange-50', icon: Award },
+    { title: 'Completion Rate', value: '100%', color: 'text-indigo-500', bg: 'bg-indigo-50', icon: CheckCircle },
   ];
 
   const performanceTableData = [
-    { module: 'Module 1: Binary Code Secret', task: 'Logic Gates Quiz', score: '98%', rank: 'Elite', date: '2025-01-20', status: 'Completed' },
-    { module: 'Module 1: Binary Code Secret', task: 'Counting Quest', score: '92%', rank: 'Master', date: '2025-01-18', status: 'Completed' },
-    { module: 'Module 2: Visual Code Architect', task: 'Maze Programming', score: '85%', rank: 'Pass', date: '2025-01-15', status: 'Completed' },
-    { module: 'Module 2: Visual Code Architect', task: 'Sprite Movement', score: '100%', rank: 'Elite', date: '2025-01-12', status: 'Completed' },
-    { module: 'Module 3: Advanced Hardware', task: 'Sensor Logic', score: '89%', rank: 'Master', date: '2025-01-05', status: 'Completed' },
+    { course: 'Digital Creators', module: 'Module 1: Binary Code Secret', task: 'Logic Gates Quiz', score: '98%', correct: 10, incorrect: 0, date: '2025-01-20', status: 'Completed' },
+    { course: 'Digital Creators', module: 'Module 1: Binary Code Secret', task: 'Counting Quest', score: '92%', correct: 9, incorrect: 1, date: '2025-01-18', status: 'Completed' },
+    { course: 'Digital Creators', module: 'Module 2: Visual Code Architect', task: 'Maze Programming', score: '85%', correct: 8, incorrect: 2, date: '2025-01-15', status: 'Completed' },
+    { course: 'Digital Creators', module: 'Module 2: Visual Code Architect', task: 'Sprite Movement', score: '100%', correct: 10, incorrect: 0, date: '2025-01-12', status: 'Completed' },
+    { course: 'Digital Creators', module: 'Module 3: Advanced Hardware', task: 'Sensor Logic', score: '89%', correct: 9, incorrect: 1, date: '2025-01-05', status: 'Completed' },
   ];
 
   return (
@@ -73,7 +73,7 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-hide pb-10">
-        <div className="max-w-6xl mx-auto space-y-6 px-1">
+        <div className="max-w-7xl mx-auto space-y-6 px-1">
           
           {/* Profile Card */}
           <div className="bg-white rounded-[3rem] p-8 shadow-xl border border-slate-100 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
@@ -143,39 +143,38 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
                      <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Full Curriculum Score History</p>
                   </div>
                </div>
-               <div className="flex items-center gap-4">
-                  <div className="hidden md:flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm">
-                     <Star size={14} className="text-amber-500 fill-current" />
-                     <span className="text-[10px] font-black text-[#304B9E] uppercase tracking-widest">Star Points: 42</span>
-                  </div>
-               </div>
             </div>
 
             <div className="overflow-x-auto scrollbar-hide">
               <table className="w-full text-left border-collapse">
                 <thead className="bg-[#292667] text-white">
                   <tr>
-                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] border-r border-white/5">Curriculum Module</th>
-                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] border-r border-white/5">Specific Task</th>
-                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-center border-r border-white/5">Raw Score</th>
-                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-center border-r border-white/5">Rank</th>
-                    <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-center">Submission Date</th>
+                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] border-r border-white/5">Course Name</th>
+                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] border-r border-white/5">Curriculum Module</th>
+                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] border-r border-white/5">Specific Task</th>
+                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-center border-r border-white/5">Score</th>
+                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-center border-r border-white/5">Correct</th>
+                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-center border-r border-white/5">Incorrect</th>
+                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-center">Submission Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {performanceTableData.map((row, idx) => (
                     <tr key={idx} className="group hover:bg-slate-50 transition-all">
-                      <td className="px-8 py-5 border-r border-slate-50">
+                      <td className="px-6 py-5 border-r border-slate-50">
                         <div className="flex items-center gap-3">
-                           <div className="w-2 h-2 rounded-full bg-[#3b82f6]"></div>
-                           <span className="text-xs font-black text-[#304B9E] uppercase tracking-tight">{row.module}</span>
+                           <BookOpen size={14} className="text-[#3b82f6]" />
+                           <span className="text-xs font-black text-[#304B9E] uppercase tracking-tight">{row.course}</span>
                         </div>
                       </td>
-                      <td className="px-8 py-5 border-r border-slate-50">
-                        <span className="text-xs font-bold text-slate-500 uppercase tracking-tight">{row.task}</span>
+                      <td className="px-6 py-5 border-r border-slate-50">
+                        <span className="text-xs font-bold text-slate-500 uppercase tracking-tight">{row.module}</span>
                       </td>
-                      <td className="px-8 py-5 text-center border-r border-slate-50">
-                        <span className={`inline-block px-4 py-1 rounded-lg font-black text-sm shadow-sm ${
+                      <td className="px-6 py-5 border-r border-slate-50">
+                        <span className="text-xs font-bold text-slate-400 uppercase tracking-tight">{row.task}</span>
+                      </td>
+                      <td className="px-6 py-5 text-center border-r border-slate-50">
+                        <span className={`inline-block px-3 py-1 rounded-lg font-black text-sm shadow-sm ${
                           parseInt(row.score) >= 95 ? 'bg-emerald-500 text-white' : 
                           parseInt(row.score) >= 90 ? 'bg-[#304B9E] text-white' : 
                           'bg-indigo-50 text-[#304B9E]'
@@ -183,19 +182,19 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
                           {row.score}
                         </span>
                       </td>
-                      <td className="px-8 py-5 text-center border-r border-slate-50">
-                        <div className="flex items-center justify-center gap-2">
-                           {row.rank === 'Elite' && <Trophy size={14} className="text-amber-500" />}
-                           <span className={`text-[10px] font-black uppercase tracking-widest ${
-                             row.rank === 'Elite' ? 'text-amber-500' : 
-                             row.rank === 'Master' ? 'text-[#3b82f6]' : 
-                             'text-slate-400'
-                           }`}>
-                             {row.rank}
-                           </span>
+                      <td className="px-6 py-5 text-center border-r border-slate-50">
+                        <div className="flex items-center justify-center gap-1.5 text-emerald-600">
+                           <Check size={14} strokeWidth={3} />
+                           <span className="text-sm font-black">{row.correct}</span>
                         </div>
                       </td>
-                      <td className="px-8 py-5 text-center">
+                      <td className="px-6 py-5 text-center border-r border-slate-50">
+                        <div className="flex items-center justify-center gap-1.5 text-rose-600">
+                           <CloseIcon size={14} strokeWidth={3} />
+                           <span className="text-sm font-black">{row.incorrect}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-5 text-center">
                         <div className="flex items-center justify-center gap-2 text-slate-300">
                            <Calendar size={12} />
                            <span className="text-[10px] font-mono font-black">{row.date}</span>
@@ -218,49 +217,27 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-6">
-            <div className="bg-[#292667] rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden group">
-               <div className="absolute -top-12 -right-12 w-32 h-32 bg-[#F05A28]/10 rounded-full blur-2xl"></div>
-               <h4 className="text-lg font-black uppercase tracking-tight flex items-center gap-3 mb-6 relative z-10">
-                 <Sparkles className="text-[#F05A28]" /> Skills Radar
-               </h4>
-               <div className="space-y-6 relative z-10">
-                  {[
-                    { label: 'Logic Reasoning', val: 90, color: 'bg-[#F05A28]' },
-                    { label: 'Creative Design', val: 75, color: 'bg-[#3b82f6]' },
-                    { label: 'Hardware Theory', val: 85, color: 'bg-[#00a651]' },
-                  ].map(skill => (
-                     <div key={skill.label} className="space-y-2">
-                        <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-widest text-white/60">
-                           <span>{skill.label}</span>
-                           <span className="text-white">{skill.val}%</span>
-                        </div>
-                        <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden border border-white/5">
-                           <div className={`h-full ${skill.color} transition-all duration-[2000ms] shadow-[0_0_10px_rgba(240,90,40,0.3)]`} style={{ width: `${skill.val}%` }}></div>
-                        </div>
-                     </div>
-                  ))}
-               </div>
-            </div>
-
-            <div className="bg-white rounded-[2.5rem] p-8 shadow-xl border border-slate-100 flex flex-col items-center justify-center text-center">
-               <div className="w-20 h-20 bg-amber-50 text-amber-500 rounded-[2rem] flex items-center justify-center mb-5 shadow-inner border border-amber-100 scale-110">
-                  <Star size={40} fill="currentColor" className="drop-shadow-sm" />
-               </div>
-               <h4 className="text-2xl font-black text-[#304B9E] uppercase tracking-tighter leading-none mb-3">Star Collector Rank</h4>
-               <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed max-w-xs">
-                 Jane Smith is currently in the top tier of the Downtown Hub with 42 earned stars!
-               </p>
-               <div className="mt-8 flex items-center gap-3 bg-slate-50 px-6 py-2.5 rounded-2xl border border-slate-100 shadow-inner">
-                  <div className="w-2 h-2 rounded-full bg-[#00a651] animate-pulse"></div>
-                  <span className="text-[9px] font-black text-[#304B9E] uppercase tracking-[0.2em]">Tier: Advanced Learner</span>
-               </div>
-            </div>
+          <div className="pt-4">
+             <div className="bg-white rounded-[2.5rem] p-8 shadow-xl border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="flex items-center gap-6">
+                   <div className="w-16 h-16 bg-blue-50 text-[#304B9E] rounded-2xl flex items-center justify-center shadow-inner border border-blue-100">
+                      <Award size={32} strokeWidth={2.5} />
+                   </div>
+                   <div>
+                      <h4 className="text-xl font-black text-[#304B9E] uppercase tracking-tighter">Final Evaluation Status</h4>
+                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Jane Smith is tracking at <span className="text-emerald-600">Distinction Level</span> for this term.</p>
+                   </div>
+                </div>
+                <div className="flex items-center gap-3 bg-slate-50 px-6 py-4 rounded-2xl border border-slate-100">
+                   <div className="w-2 h-2 rounded-full bg-[#00a651] animate-pulse"></div>
+                   <span className="text-[10px] font-black text-[#304B9E] uppercase tracking-[0.2em]">Verified Performance Record</span>
+                </div>
+             </div>
           </div>
         </div>
       </div>
       
-      <p className="text-center text-[8px] font-black text-slate-300 uppercase tracking-[0.4em] mb-4">U Book Store Global Analytics • node_73434_jane • v2.4.5</p>
+      <p className="text-center text-[8px] font-black text-slate-300 uppercase tracking-[0.4em] mb-4">U Book Store Global Analytics • node_73434_jane • v2.4.6</p>
     </div>
   );
 };
