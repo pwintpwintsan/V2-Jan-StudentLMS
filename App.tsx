@@ -25,6 +25,7 @@ import { CourseViewerView } from './components/views/CourseViewerView.tsx';
 import { LandingPageView } from './components/views/LandingPageView.tsx';
 import { OrderCheckoutView } from './components/views/OrderCheckoutView.tsx';
 import { ProgramSyllabusView } from './components/views/ProgramSyllabusView.tsx';
+import { AccountProfileView } from './components/views/AccountProfileView.tsx';
 import { View, Teacher, UserRole, UserPermissions, Order } from './types.ts';
 import { MOCK_TEACHER, MOCK_CLASSES } from './constants.tsx';
 
@@ -33,7 +34,7 @@ import { MOCK_TEACHER, MOCK_CLASSES } from './constants.tsx';
  */
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeRole, setActiveRole] = useState<UserRole>(UserRole.MAIN_CENTER);
+  const [activeRole, setActiveRole] = useState<UserRole>(UserRole.TEACHER);
   const [currentView, setCurrentView] = useState<View>(View.LANDING);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
@@ -52,69 +53,40 @@ const App: React.FC = () => {
       reports: { view: false },
     },
     'Teacher': {
-      // Granted edit permission for courses so teachers can edit exams
       courses: { view: true, edit: true, delete: false },
       certificates: { view: true, edit: true },
       accounts: { view: true, create: false, edit: false, delete: false },
       resources: { view: true, upload: false, delete: false, download: false },
       reports: { view: true },
-    },
-    'Super Admin': {
-      // Granted edit permission for courses for full hub control
-      courses: { view: true, edit: true, delete: false },
-      certificates: { view: true, edit: true },
-      accounts: { view: true, create: true, edit: true, delete: true },
-      resources: { view: true, upload: false, delete: false, download: false },
-      reports: { view: true },
-    },
-    'School Admin': {
-      courses: { view: true, edit: true, delete: true },
-      certificates: { view: true, edit: true },
-      accounts: { view: true, create: true, edit: true, delete: true },
-      resources: { view: true, upload: true, delete: true, download: false },
-      reports: { view: true },
     }
   });
 
-  // Helper to check user permissions based on active role
   const checkPermission = useCallback((category: keyof UserPermissions, action: string): boolean => {
     if (!isLoggedIn) return category === 'courses' && action === 'view';
-    if (activeRole === UserRole.MAIN_CENTER) {
-        if (category === 'resources' && action === 'download') return false;
-        return true;
-    }
-    
-    const roleKey = activeRole === UserRole.STUDENT ? 'Student' : 
-                    activeRole === UserRole.TEACHER ? 'Teacher' : 
-                    activeRole === UserRole.SUPER_ADMIN ? 'Super Admin' : 'School Admin';
-    
+    const roleKey = activeRole === UserRole.STUDENT ? 'Student' : 'Teacher';
     const rolePerms = rolePermissions[roleKey];
     if (!rolePerms || !rolePerms[category]) return false;
-    
-    // For single boolean permissions like 'reports', action can be 'view'
     const permGroup = rolePerms[category] as any;
     if (typeof permGroup === 'boolean') return permGroup;
     return permGroup[action] || false;
   }, [isLoggedIn, activeRole, rolePermissions]);
 
-  // Handle automatic view transitions based on login state and role
   useEffect(() => {
     if (!isLoggedIn) {
       setCurrentView(View.LANDING);
     } else {
       if (activeRole === UserRole.STUDENT) {
-        setCurrentView(View.STUDENT_DASHBOARD);
-      } else if (activeRole === UserRole.SUPER_ADMIN) {
-        setCurrentView(View.CENTER_PROFILE);
+        if (currentView === View.LANDING || currentView === View.MY_CLASSES) {
+          setCurrentView(View.STUDENT_DASHBOARD);
+        }
       } else {
-        if (currentView === View.LANDING) {
-          setCurrentView(View.CENTER_LIST);
+        if (currentView === View.LANDING || currentView === View.STUDENT_DASHBOARD) {
+          setCurrentView(View.MY_CLASSES);
         }
       }
     }
   }, [isLoggedIn, activeRole]);
 
-  // View renderer switch
   const renderView = () => {
     switch (currentView) {
       case View.LANDING:
@@ -214,6 +186,11 @@ const App: React.FC = () => {
                                     onEdit={() => { setCurrentView(View.COURSES_ADMIN); }}
                                     activeRole={activeRole}
                                   /> : null;
+      case View.ACCOUNT_PROFILE:
+        return <AccountProfileView 
+                  user={activeRole === UserRole.STUDENT ? { name: 'Timmy Lee', id: '1000001', role: 'Student', hub: 'Downtown Branch', level: 'Course A' } : { name: 'Jane Smith', id: 'T1234567', role: 'Teacher', hub: 'Downtown Branch', level: 'N/A' }} 
+                  onBack={() => setCurrentView(activeRole === UserRole.STUDENT ? View.STUDENT_DASHBOARD : View.MY_CLASSES)} 
+                />;
       default:
         return <LandingPageView onLogin={() => setIsLoggedIn(true)} onOrderCreate={(o) => { setCurrentOrder(o); setCurrentView(View.CHECKOUT); }} />;
     }
@@ -231,6 +208,7 @@ const App: React.FC = () => {
         onRoleChange={setActiveRole}
         onLogout={() => setIsLoggedIn(false)}
         onLogin={() => setIsLoggedIn(true)}
+        onProfileClick={() => setCurrentView(View.ACCOUNT_PROFILE)}
       />
       <div className="flex flex-1 overflow-hidden">
         {isLoggedIn && (
@@ -251,5 +229,4 @@ const App: React.FC = () => {
   );
 };
 
-// Export App as the default export to be used in index.tsx
 export default App;

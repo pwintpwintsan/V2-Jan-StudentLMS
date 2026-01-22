@@ -154,5 +154,6 @@ export enum View {
   ACCOUNT_CREATION = 'account-creation',
   REGISTER_BRANCH = 'register-branch',
   COURSE_VIEWER = 'course-viewer',
-  PROGRAM_SYLLABUS = 'program-syllabus'
+  PROGRAM_SYLLABUS = 'program-syllabus',
+  ACCOUNT_PROFILE = 'account-profile'
 }

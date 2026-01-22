@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { 
-  Users, 
   Award, 
   ClipboardCheck, 
   FileSearch,
@@ -11,7 +10,6 @@ import {
   Building2,
   Zap,
   X,
-  LayoutGrid,
   Settings2,
   BarChart3,
   Library
@@ -33,13 +31,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
   const getWelcomeMessage = () => {
     switch (activeRole) {
       case UserRole.MAIN_CENTER:
-        return "Welcome Main Center Admin";
+        return "Welcome Admin";
       case UserRole.SUPER_ADMIN:
-        return "Welcome School Admin";
+        return "Welcome Admin";
       case UserRole.TEACHER:
-        return "Welcome Teacher";
+        return "Welcome Jane Smith";
       case UserRole.STUDENT:
-        return "Welcome Student";
+        return "Welcome Timmy Lee";
       default:
         return "Welcome User";
     }
@@ -50,11 +48,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
       ? { id: View.CENTER_PROFILE, label: 'Center Profile', icon: Settings2, category: 'accounts' }
       : { id: View.CENTER_LIST, label: 'Hub Directory', icon: Building2, category: 'accounts' },
     
-    // School Admin keeps 'Classes' view, Main Center Admin doesn't
-    ...(activeRole === UserRole.SUPER_ADMIN 
-      ? [{ id: View.CLASSES, label: 'Classes', icon: LayoutGrid, category: 'accounts' }] 
-      : []),
-
     // Main Center Admin goes to management view, others go to library view
     { 
       id: activeRole === UserRole.MAIN_CENTER ? View.COURSES_ADMIN : View.MY_CLASSES, 
@@ -75,8 +68,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
 
   const teacherItems = [
     { id: View.MY_CLASSES, label: 'Courses', icon: BookOpen, category: 'accounts' },
-    { id: View.CLASSES, label: 'Classes', icon: LayoutGrid, category: 'accounts' },
-    { id: View.STUDENTS, label: 'Roster', icon: Users, category: 'accounts' },
     { id: View.REPORTS, label: 'Reports', icon: BarChart3, category: 'reports' },
     { id: View.TESTS, label: 'Exams', icon: ClipboardCheck, category: 'courses' },
     { id: View.RESOURCES, label: 'Assets', icon: FileSearch, category: 'resources' },
