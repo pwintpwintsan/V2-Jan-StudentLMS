@@ -18,7 +18,9 @@ import {
   Target,
   Sparkles,
   Timer,
-  AlertCircle
+  AlertCircle,
+  Clock,
+  BookOpen
 } from 'lucide-react';
 
 // Define the missing TestsViewProps interface
@@ -95,7 +97,7 @@ export const ExamSession = ({
                onClick={startExam}
                className="w-full py-4 md:py-5 bg-[#304B9E] text-white rounded-xl md:rounded-2xl font-black text-xs md:text-sm uppercase tracking-[0.2em] shadow-xl hover:bg-[#00a651] transition-all border-b-6 border-black/10 active:scale-95"
              >
-                Initialize Exam
+                Take Exam
              </button>
              <button onClick={onClose} className="w-full py-2 text-slate-400 font-black uppercase text-[8px] md:text-[10px] tracking-widest hover:text-rose-500">Cancel and Exit</button>
           </div>
@@ -256,26 +258,33 @@ export const TestsView: React.FC<TestsViewProps> = ({ checkPermission }) => {
     return saved ? JSON.parse(saved) : MOCK_COURSES;
   });
 
-  const [selectedId, setSelectedId] = useState<'all' | string>('all');
+  const [selectedId, setSelectedId] = useState<string>('none');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeSessionData, setActiveSessionData] = useState<{ questions: QuizQuestion[], title: string } | null>(null);
 
+  // Simulated progress state
+  const mockProgress: Record<string, 'incomplete' | 'completed' | 'new'> = {
+    'a_m1': 'incomplete',
+    'b_m1': 'new',
+  };
+
   const filteredModules = useMemo(() => {
+    if (selectedId === 'none') return [];
+
     let baseModules: (Module & { courseName?: string, courseId: string })[] = [];
-    if (selectedId === 'all') {
-      courses.forEach(c => {
-        c.modules.forEach(m => {
-          baseModules.push({ ...m, courseName: c.name, courseId: c.id });
-        });
-      });
-    } else {
-      const c = courses.find(c => c.id === selectedId);
-      if (c) baseModules = c.modules.map(m => ({ ...m, courseName: c.name, courseId: c.id }));
+    const c = courses.find(course => course.id === selectedId);
+    if (c) {
+      baseModules = c.modules.map(m => ({ ...m, courseName: c.name, courseId: c.id }));
     }
-    return baseModules.filter(m => 
-      m.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      m.courseName?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+
+    // Filter only modules that have published quizzes
+    return baseModules.filter(m => {
+      const quizLesson = m.lessons.find(l => l.type === 'quiz');
+      return quizLesson?.isPublished && (
+        m.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        m.courseName?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
   }, [selectedId, courses, searchTerm]);
 
   return (
@@ -288,29 +297,29 @@ export const TestsView: React.FC<TestsViewProps> = ({ checkPermission }) => {
         />
       )}
 
-      {/* Smaller Responsive Header */}
-      <div className="w-full bg-[#304B9E] rounded-xl p-3 md:p-5 text-white shadow-xl border-b-6 border-[#6366f1] flex flex-col md:flex-row items-center justify-between gap-4 flex-shrink-0 relative overflow-hidden">
+      {/* Header */}
+      <div className="w-full bg-[#304B9E] rounded-xl p-3 md:p-5 text-white shadow-xl border-b-6 border-[#F05A28] flex flex-col md:flex-row items-center justify-between gap-4 flex-shrink-0 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
         <div className="flex items-center gap-3 relative z-10">
-           <div className="p-2 md:p-2.5 bg-[#6366f1] rounded-lg text-white shadow-lg rotate-3">
+           <div className="p-2 md:p-2.5 bg-[#F05A28] rounded-lg text-white shadow-lg rotate-3">
              <Zap size={20} md:size={22} strokeWidth={3} fill="currentColor" />
            </div>
            <div>
-             <h2 className="text-lg md:text-xl font-black leading-none tracking-tight uppercase">Exam <span className="text-[#F05A28]">Center</span></h2>
-             <p className="text-[7px] md:text-[8px] font-black uppercase tracking-widest text-white/40 mt-1">Assessment authority</p>
+             <h2 className="text-lg md:text-xl font-black leading-none tracking-tight uppercase">Exam <span className="text-white">Portal</span></h2>
+             <p className="text-[7px] md:text-[8px] font-black uppercase tracking-widest text-white/40 mt-1">Digital Assessment Console</p>
            </div>
         </div>
       </div>
 
-      {/* Control Strip */}
+      {/* Filters */}
       <div className="w-full bg-white p-2 rounded-xl md:rounded-2xl shadow-lg border border-slate-100 flex flex-col md:flex-row items-center gap-2 flex-shrink-0">
         <div className="flex-1 relative w-full group">
           <select 
             value={selectedId} 
             onChange={(e) => setSelectedId(e.target.value)} 
-            className="w-full bg-slate-50 pl-4 pr-10 py-2 md:py-2.5 rounded-lg md:rounded-xl border border-slate-100 outline-none font-black text-[9px] md:text-[10px] text-[#304B9E] uppercase appearance-none cursor-pointer focus:border-[#6366f1] transition-all"
+            className="w-full bg-slate-50 pl-4 pr-10 py-2 md:py-2.5 rounded-lg md:rounded-xl border border-slate-100 outline-none font-black text-[9px] md:text-[10px] text-[#304B9E] uppercase appearance-none cursor-pointer focus:border-[#F05A28] transition-all"
           >
-            <option value="all">All Programs</option>
+            <option value="none">Choose your course</option>
             {courses.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
           <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -320,63 +329,87 @@ export const TestsView: React.FC<TestsViewProps> = ({ checkPermission }) => {
           <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
           <input 
             type="text" 
-            placeholder="Search exams..." 
+            placeholder="Search assessments..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-slate-50 pl-10 pr-4 py-2 md:py-2.5 rounded-lg md:rounded-xl border border-slate-100 outline-none font-black text-[9px] md:text-[10px] text-[#304B9E] uppercase placeholder:text-slate-200 focus:border-[#6366f1] transition-all"
+            disabled={selectedId === 'none'}
+            className="w-full bg-slate-50 pl-10 pr-4 py-2 md:py-2.5 rounded-lg md:rounded-xl border border-slate-100 outline-none font-black text-[9px] md:text-[10px] text-[#304B9E] uppercase placeholder:text-slate-200 focus:border-[#F05A28] transition-all disabled:opacity-50"
           />
         </div>
       </div>
 
-      {/* Modules Grid - Responsive Columns */}
+      {/* Content Grid */}
       <div className="flex-1 overflow-y-auto scrollbar-hide pb-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
-          {filteredModules.map((module, i) => {
-            const quizLesson = module.lessons.find(l => l.type === 'quiz');
-            const questions = quizLesson?.quiz || [];
-            const isActive = quizLesson?.isPublished || false;
-            
-            return (
-              <div key={module.id} className={`group bg-white rounded-2xl md:rounded-[2rem] p-5 md:p-6 shadow-md border-4 transition-all hover:shadow-xl flex flex-col gap-4 relative overflow-hidden ${isActive ? 'border-emerald-50 hover:border-emerald-200' : 'border-slate-50 hover:border-slate-200'}`}>
-                <div className="flex items-center justify-between relative z-10">
-                  <div className={`w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center font-black text-xs md:text-sm shadow-md border-b-2 border-black/10 transition-all ${isActive ? 'bg-[#00a651] text-white rotate-3' : 'bg-slate-100 text-slate-300'}`}>
-                    {isActive ? <Zap size={16} md:size={18} fill="currentColor" /> : i + 1}
+        {selectedId === 'none' ? (
+          <div className="h-full flex flex-col items-center justify-center py-20 text-center opacity-40 animate-in fade-in duration-1000">
+             <div className="p-8 bg-slate-100 rounded-[3rem] mb-6 shadow-inner border-2 border-slate-50">
+               <BookOpen size={64} className="text-[#304B9E]" strokeWidth={1} />
+             </div>
+             <p className="text-xl md:text-2xl font-black text-[#304B9E] uppercase tracking-[0.3em]">Choose your course</p>
+             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-3">Select a curriculum from the dropdown to initialize exams</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filteredModules.map((module, i) => {
+              const quizLesson = module.lessons.find(l => l.type === 'quiz');
+              const questions = quizLesson?.quiz || [];
+              const status = mockProgress[module.id] || 'new';
+              const isRobotics = module.courseName?.toLowerCase().includes('robotics');
+              
+              return (
+                <div key={module.id} className={`group bg-white rounded-2xl md:rounded-[2rem] p-5 md:p-6 shadow-md border-4 transition-all hover:shadow-xl flex flex-col gap-4 relative overflow-hidden ${status === 'incomplete' ? 'border-amber-100 hover:border-amber-300' : isRobotics ? 'border-orange-100 hover:border-orange-400' : 'border-slate-50 hover:border-[#304B9E]/20'}`}>
+                  
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className={`w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center font-black text-xs md:text-sm shadow-md border-b-2 border-black/10 transition-all ${status === 'incomplete' ? 'bg-[#F05A28] text-white rotate-3' : isRobotics ? 'bg-[#ec2027] text-white' : 'bg-slate-100 text-slate-300'}`}>
+                      {status === 'incomplete' ? <Clock size={16} md:size={18} strokeWidth={3} /> : i + 1}
+                    </div>
+                    {status === 'incomplete' && (
+                      <span className="px-2 py-0.5 bg-amber-50 text-amber-700 rounded-full text-[6px] md:text-[7px] font-black uppercase tracking-widest border border-amber-200 animate-pulse">
+                        Incomplete Exam
+                      </span>
+                    )}
+                    {isRobotics && status === 'new' && (
+                      <span className="px-2 py-0.5 bg-orange-50 text-[#F05A28] rounded-full text-[6px] md:text-[7px] font-black uppercase tracking-widest border border-orange-200">
+                        New Robotics Exam
+                      </span>
+                    )}
                   </div>
-                </div>
 
-                <div className="min-w-0 relative z-10">
-                  <span className="px-2 py-0.5 bg-blue-50 text-[#304B9E] rounded-md text-[7px] md:text-[8px] font-black uppercase tracking-widest border border-blue-100 mb-2 inline-block">
-                    {module.courseName}
-                  </span>
-                  <h4 className="text-sm md:text-base font-black text-[#304B9E] uppercase tracking-tight leading-tight group-hover:text-[#6366f1] transition-colors line-clamp-1">{module.title}</h4>
-                  <div className="flex items-center gap-2 mt-2">
-                     <div className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#00a651] animate-pulse' : 'bg-slate-300'}`}></div>
-                     <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">{isActive ? 'Live Session' : 'Draft Mode'}</p>
+                  <div className="min-w-0 relative z-10">
+                    <span className={`px-2 py-0.5 rounded-md text-[7px] md:text-[8px] font-black uppercase tracking-widest border mb-2 inline-block ${isRobotics ? 'bg-orange-50 text-[#F05A28] border-orange-100' : 'bg-blue-50 text-[#304B9E] border-blue-100'}`}>
+                      {module.courseName}
+                    </span>
+                    <h4 className="text-sm md:text-base font-black text-[#304B9E] uppercase tracking-tight leading-tight group-hover:text-[#F05A28] transition-colors line-clamp-1">{module.title}</h4>
+                    <div className="flex items-center gap-2 mt-2">
+                       <p className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                         <Target size={10} className="text-[#3b82f6]" /> {questions.length} Logic Nodes
+                       </p>
+                    </div>
                   </div>
-                </div>
-                
-                <div className="mt-auto pt-4 border-t-2 border-slate-50 relative z-10">
-                  {questions.length > 0 ? (
+                  
+                  <div className="mt-auto pt-4 border-t-2 border-slate-50 relative z-10">
                     <button 
                       onClick={() => setActiveSessionData({ questions, title: module.title })}
-                      className={`w-full py-3 md:py-4 rounded-lg md:rounded-xl font-black text-[9px] md:text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 md:gap-3 shadow-lg border-b-4 border-black/10 active:scale-95 group/take ${
-                        isActive ? 'bg-[#304B9E] text-white hover:bg-[#00a651]' : 'bg-slate-100 text-slate-400 cursor-not-allowed grayscale'
+                      className={`w-full py-3 md:py-4 rounded-lg md:rounded-xl font-black text-[9px] text-white md:text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 md:gap-3 shadow-lg border-b-4 border-black/10 active:scale-95 group/take ${
+                        status === 'incomplete' ? 'bg-amber-500' : isRobotics ? 'bg-[#F05A28] hover:bg-[#304B9E]' : 'bg-[#304B9E] hover:bg-[#00a651]'
                       }`}
-                      disabled={!isActive}
                     >
                       <ArrowRight size={16} md:size={18} strokeWidth={4} className="group-hover/take:translate-x-1 transition-transform" /> 
-                      Start Exam
+                      {status === 'incomplete' ? 'Resume Exam' : 'Take Exam'}
                     </button>
-                  ) : (
-                    <div className="py-3 md:py-4 text-center bg-slate-50 rounded-lg md:rounded-xl border border-dashed border-slate-200">
-                       <p className="text-[7px] md:text-[8px] font-black text-slate-300 uppercase tracking-widest">No Exam Node</p>
-                    </div>
-                  )}
+                  </div>
                 </div>
+              );
+            })}
+
+            {filteredModules.length === 0 && (
+              <div className="col-span-full py-20 text-center opacity-30">
+                 <AlertCircle size={48} className="mx-auto text-slate-300 mb-4" />
+                 <p className="text-sm font-black text-[#304B9E] uppercase tracking-widest">No Exams Found For This Course</p>
               </div>
-            );
-          })}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

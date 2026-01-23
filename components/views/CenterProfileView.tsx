@@ -358,7 +358,7 @@ export const CenterProfileView: React.FC<CenterProfileViewProps> = ({ activeRole
         />
       )}
 
-      {/* Compact Standardized Header - Updated Banner Text size and removed Hub Name Subtitle */}
+      {/* Header Updated with Specific Branding */}
       <div className="w-full bg-[#304B9E] rounded-xl p-3 md:p-4 text-white shadow-xl border-b-6 border-[#F05A28] flex flex-col md:flex-row items-center justify-between gap-4 flex-shrink-0 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
         <div className="flex items-center gap-3 relative z-10">
@@ -366,7 +366,7 @@ export const CenterProfileView: React.FC<CenterProfileViewProps> = ({ activeRole
              <Building2 size={20} strokeWidth={3} />
            </div>
            <div>
-             <h2 className="text-sm md:text-base font-black leading-none tracking-tight uppercase">Hub <span className="text-[#F05A28]">ID Number: 123232</span></h2>
+             <h2 className="text-sm md:text-base font-black leading-none tracking-tight uppercase">School ID: 12323</h2>
            </div>
         </div>
         
@@ -374,7 +374,7 @@ export const CenterProfileView: React.FC<CenterProfileViewProps> = ({ activeRole
         <div className="flex items-center gap-4 relative z-10">
             <div className="flex items-center gap-2 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 backdrop-blur-sm">
                 <Tag size={10} className="text-[#F05A28]" strokeWidth={3} />
-                <span className="text-[8px] font-black text-white font-mono tracking-widest leading-none">ID: 73434</span>
+                <span className="text-[8px] font-black text-white font-mono tracking-widest leading-none">SYS: 73434</span>
             </div>
             <div className="flex items-center gap-2 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 backdrop-blur-sm">
                 <Clock size={10} className="text-[#00a651]" strokeWidth={3} />
@@ -383,13 +383,12 @@ export const CenterProfileView: React.FC<CenterProfileViewProps> = ({ activeRole
         </div>
       </div>
 
-      {/* Control Bar - Standardized */}
       <div className="w-full bg-white p-2.5 rounded-2xl shadow-lg border border-slate-100 flex flex-col md:flex-row items-center gap-2.5 flex-shrink-0">
         <div className="flex-1 flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 w-full group focus-within:border-[#F05A28] transition-all">
           <Search size={18} className="text-slate-400 group-focus-within:text-[#304B9E]" strokeWidth={3} />
           <input 
             type="text" 
-            placeholder="Search by ID (e.g. ST100...) or Course Name..." 
+            placeholder="Search Course..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="bg-transparent text-xs font-black text-[#304B9E] outline-none w-full placeholder:text-slate-200 uppercase"
@@ -405,17 +404,16 @@ export const CenterProfileView: React.FC<CenterProfileViewProps> = ({ activeRole
         )}
       </div>
 
-      {/* Scrollable Container */}
       <div className="flex-1 overflow-y-auto scrollbar-hide space-y-8 pb-8">
         <CourseSectionTable 
-          title="Starter Course" 
+          title="Starter Courses" 
           courses={starterCourses} 
           onAddStudents={(course) => setAddStudentsTarget({ id: course.id, name: course.name })} 
           activeRole={activeRole}
         />
 
         <CourseSectionTable 
-          title="Mover Course" 
+          title="Mover Courses" 
           courses={moverCourses} 
           onAddStudents={(course) => setAddStudentsTarget({ id: course.id, name: course.name })} 
           activeRole={activeRole}
@@ -423,7 +421,7 @@ export const CenterProfileView: React.FC<CenterProfileViewProps> = ({ activeRole
       </div>
 
       <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between shrink-0 rounded-b-2xl">
-         <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Global Catalog Sync: {starterCourses.length + moverCourses.length} ACTIVE</p>
+         <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">School Node Sync: {starterCourses.length + moverCourses.length} ACTIVE</p>
          <div className="flex items-center gap-2">
             <button className="p-1.5 bg-white rounded-lg shadow-sm border border-slate-200 text-slate-300 hover:text-[#304B9E] transition-all"><MoreHorizontal size={14} /></button>
          </div>

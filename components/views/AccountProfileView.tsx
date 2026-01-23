@@ -75,7 +75,7 @@ export const AccountProfileView: React.FC<AccountProfileViewProps> = ({ user, on
               <h2 className="text-xl md:text-3xl font-black text-[#304B9E] uppercase tracking-tighter leading-none mb-1 md:mb-2">Jane Smith</h2>
               <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1 md:py-1.5 bg-slate-50 border border-slate-100 rounded-full">
                 <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-[#00a651] animate-pulse"></div>
-                <span className="text-[8px] md:text-[10px] font-black text-[#304B9E] uppercase tracking-widest">{user.role} Account</span>
+                <span className="text-[8px] md:text-[10px] font-black text-[#304B9E] uppercase tracking-widest">Student Account</span>
               </div>
             </div>
 

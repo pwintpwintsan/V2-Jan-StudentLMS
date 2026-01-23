@@ -45,10 +45,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
 
   const adminItems = [
     activeRole === UserRole.SUPER_ADMIN 
-      ? { id: View.CENTER_PROFILE, label: 'Center Profile', icon: Settings2, category: 'accounts' }
-      : { id: View.CENTER_LIST, label: 'Hub Directory', icon: Building2, category: 'accounts' },
+      ? { id: View.CENTER_PROFILE, label: 'School Profile', icon: Settings2, category: 'accounts' }
+      : { id: View.CENTER_LIST, label: 'School Directory', icon: Building2, category: 'accounts' },
     
-    // Main Center Admin goes to management view, others go to library view
     { 
       id: activeRole === UserRole.MAIN_CENTER ? View.COURSES_ADMIN : View.MY_CLASSES, 
       label: 'Courses', 
@@ -92,7 +91,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
           <nav className="space-y-1 overflow-y-auto scrollbar-hide">
             {menuItems.map((item) => {
               const Icon = item.icon;
-              // Handle active state for both versions of the Courses view
               const isActive = currentView === item.id || 
                              (item.label === 'Courses' && (currentView === View.MY_CLASSES || currentView === View.COURSES_ADMIN));
               return (
@@ -115,7 +113,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
               <div className="w-8 h-8 rounded-lg bg-[#ec2027] flex items-center justify-center text-white text-[10px] font-bold">HQ</div>
               <div>
                  <p className="text-[10px] font-bold text-[#304B9E] uppercase leading-none">System Stable</p>
-                 <p className="text-[8px] text-slate-400 mt-0.5">v2.4.0-release</p>
+                 <p className="text-[8px] text-slate-400 mt-0.5">v2.4.1-node</p>
               </div>
            </div>
         </div>

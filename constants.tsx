@@ -3,8 +3,8 @@ import { Teacher, Student, ClassInfo, Course, School } from './types.ts';
 
 export const MOCK_SCHOOLS: School[] = [
   { 
-    id: 'sch1', 
-    name: 'Downtown Branch', 
+    id: '12323', 
+    name: 'Downtown School', 
     location: 'City Center', 
     region: 'Central',
     teacherQuota: 15, 
@@ -51,7 +51,7 @@ export const MOCK_COURSES: Course[] = [
     isPurchased: true, 
     thumbnail: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop',
     description: "Foundation journey for young learners. Master the basics of digital logic and computer science.",
-    category: "Starter Program",
+    category: "Starter Course",
     level: "Foundation",
     duration: "20 Hours",
     lastUpdated: "2024-08-01",
@@ -60,10 +60,10 @@ export const MOCK_COURSES: Course[] = [
         id: 'a_m1',
         title: 'Module 1: Binary Code Secret',
         lessons: [
-          { id: 'al1', title: 'Task 1: Thinking in 0s and 1s', type: 'video', isPublished: true },
+          { id: 'al1', title: 'Thinking in 0s and 1s', type: 'video', isPublished: true },
           { 
             id: 'al2', 
-            title: 'Task 2: Logic Gates Quiz', 
+            title: 'Logic Gates Quiz', 
             type: 'quiz', 
             quiz: [
               { id: 'aq1', question: 'How is the number 3 represented in binary?', options: ['10', '11', '01', '00'], correctAnswer: 1 },
@@ -71,7 +71,37 @@ export const MOCK_COURSES: Course[] = [
             ], 
             isPublished: true 
           },
-          { id: 'al_doc1', title: 'Task 3: Binary Cheat Sheet', type: 'document', fileName: 'Binary_Guide.pdf', fileSize: '1.2 MB', isPublished: true }
+          { id: 'al_doc1', title: 'Binary Cheat Sheet', type: 'document', fileName: 'Binary_Guide.pdf', fileSize: '1.2 MB', isPublished: true }
+        ]
+      },
+      {
+        id: 'a_m2',
+        title: 'Module 2: The Flow of Data',
+        lessons: [
+          { 
+            id: 'al3', 
+            title: 'Data Paths Quiz', 
+            type: 'quiz', 
+            quiz: [
+              { id: 'aq3', question: 'What is a network?', options: ['One computer', 'Connected devices', 'A screen', 'A keyboard'], correctAnswer: 1 }
+            ], 
+            isPublished: true 
+          }
+        ]
+      },
+      {
+        id: 'a_m3',
+        title: 'Module 3: Algorithm Logic',
+        lessons: [
+          { 
+            id: 'al4', 
+            title: 'Loop Patterns Quiz', 
+            type: 'quiz', 
+            quiz: [
+              { id: 'aq4', question: 'What does a loop do?', options: ['Stops a program', 'Repeats code', 'Changes color', 'Deletes data'], correctAnswer: 1 }
+            ], 
+            isPublished: true 
+          }
         ]
       }
     ]
@@ -91,7 +121,61 @@ export const MOCK_COURSES: Course[] = [
         id: 'b_m1',
         title: 'Module 1: The Robots Brain',
         lessons: [
-          { id: 'bl1', title: 'Task 1: Intro to Controllers', type: 'video', isPublished: true }
+          { id: 'bl1', title: 'Intro to Controllers', type: 'video', isPublished: true },
+          { 
+            id: 'bl2', 
+            title: 'Sensor Input Exam', 
+            type: 'quiz', 
+            quiz: [
+              { id: 'bq1', question: 'Which sensor detects light?', options: ['Ultrasonic', 'LDR', 'Touch', 'Gyro'], correctAnswer: 1 }
+            ], 
+            isPublished: true 
+          }
+        ]
+      },
+      {
+        id: 'b_m2',
+        title: 'Module 2: Motion Dynamics',
+        lessons: [
+          { 
+            id: 'bl3', 
+            title: 'Motor Control Exam', 
+            type: 'quiz', 
+            quiz: [
+              { id: 'bq2', question: 'What converts electrical energy to motion?', options: ['Battery', 'Motor', 'Wire', 'Plastic'], correctAnswer: 1 }
+            ], 
+            isPublished: true 
+          }
+        ]
+      },
+      {
+        id: 'b_m3',
+        title: 'Module 3: Visual Processing',
+        lessons: [
+          { 
+            id: 'bl4', 
+            title: 'AI Vision Exam', 
+            type: 'quiz', 
+            quiz: [
+              { id: 'bq3', question: 'What allows a robot to see?', options: ['Speaker', 'Camera', 'Antenna', 'Wheel'], correctAnswer: 1 }
+            ], 
+            isPublished: true 
+          }
+        ]
+      },
+      {
+        id: 'b_m4',
+        title: 'Module 4: Logical Decison Making',
+        lessons: [
+          { 
+            id: 'bl5', 
+            title: 'Pathfinding Exam', 
+            type: 'quiz', 
+            quiz: [
+              { id: 'bq4', question: 'Which algorithm is used for paths?', options: ['Sort', 'A*', 'Add', 'Print'], correctAnswer: 1 }
+            ], 
+            isPublished: true 
+          }
         ]
       }
     ]
@@ -103,11 +187,11 @@ export const MOCK_TEACHER: Teacher = {
   username: "T1234567",
   firstName: "Jane",
   lastName: "Smith",
-  schoolName: "Downtown Branch",
+  schoolName: "Downtown School",
   teacherCode: "DIR-4421",
   role: "Educator",
   assignedClassIds: ['c1', 'c2'],
-  branchId: 'sch1'
+  branchId: '12323'
 };
 
 export const MOCK_STUDENTS: Student[] = [
