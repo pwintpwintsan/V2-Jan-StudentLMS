@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MOCK_COURSES } from '../../constants.tsx';
-import { UserRole, Lesson, Module, Course } from '../../types.ts';
+import { UserRole, Lesson, Course } from '../../types.ts';
 import { 
   ChevronLeft, 
   BookOpen, 
@@ -19,11 +19,7 @@ import {
   FileCheck,
   Star,
   Sparkles,
-  CheckCircle2,
-  Save,
-  Type,
   FileText,
-  Settings,
   Eye
 } from 'lucide-react';
 
@@ -31,7 +27,6 @@ interface ProgramSyllabusViewProps {
   courseId: string;
   onBack: () => void;
   onEnroll?: (taskId?: string) => void;
-  onEdit?: () => void;
   activeRole?: UserRole;
 }
 
@@ -91,24 +86,14 @@ const TaskDetailModal = ({ lesson, onClose }: { lesson: Lesson, onClose: () => v
   );
 };
 
-export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ courseId, onBack, onEnroll, onEdit, activeRole }) => {
-  const initialCourse = MOCK_COURSES.find(c => c.id === courseId) || MOCK_COURSES[0];
-  const [course, setCourse] = useState<Course>(initialCourse);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedName, setEditedName] = useState(course.name);
-  const [editedDescription, setEditedDescription] = useState(course.description || '');
+export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ courseId, onBack, onEnroll, activeRole }) => {
+  const course = MOCK_COURSES.find(c => c.id === courseId) || MOCK_COURSES[0];
   
   const totalTasks = course.modules.reduce((acc, mod) => acc + mod.lessons.length, 0);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   
   const isMainAdmin = activeRole === UserRole.MAIN_CENTER;
-  const isAdmin = activeRole === UserRole.MAIN_CENTER;
   const canEnroll = activeRole !== UserRole.TEACHER && activeRole !== UserRole.SUPER_ADMIN && activeRole !== UserRole.MAIN_CENTER;
-
-  const handleSave = () => {
-    setCourse({ ...course, name: editedName, description: editedDescription });
-    setIsEditing(false);
-  };
 
   const getTaskIcon = (type: string) => {
     switch (type) {
@@ -125,66 +110,30 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
     <div className="h-full flex flex-col gap-4 overflow-y-auto scrollbar-hide animate-in fade-in duration-500 pb-12">
       {selectedLesson && <TaskDetailModal lesson={selectedLesson} onClose={() => setSelectedLesson(null)} />}
 
-      {/* Conditional Header: Banner vs Compact Admin Header */}
-      {!isMainAdmin ? (
-        <div className="w-full relative group shrink-0">
-          <div className="absolute top-4 left-4 z-30 flex gap-2">
-            <button 
-              onClick={onBack} 
-              className="p-2 bg-[#292667]/80 backdrop-blur-md rounded-xl text-white shadow-xl hover:bg-[#ec2027] transition-all active:scale-90 border border-white/20"
-            >
-              <ChevronLeft size={20} strokeWidth={4} />
-            </button>
-          </div>
-
-          <div className="w-full h-[180px] md:h-[220px] rounded-[1.5rem] overflow-hidden relative shadow-xl border-b-[6px] border-[#3b82f6]">
-            <img 
-              src={course.thumbnail} 
-              className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105" 
-              alt="Program Banner" 
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#292667]/30 to-transparent"></div>
-          </div>
+      {/* Hero Header with no edit controls */}
+      <div className="w-full relative group shrink-0">
+        <div className="absolute top-4 left-4 z-30 flex gap-2">
+          <button 
+            onClick={onBack} 
+            className="p-2 bg-[#292667]/80 backdrop-blur-md rounded-xl text-white shadow-xl hover:bg-[#ec2027] transition-all active:scale-90 border border-white/20"
+          >
+            <ChevronLeft size={20} strokeWidth={4} />
+          </button>
         </div>
-      ) : (
-        /* COMPACT HEADER FOR MAIN CENTER ADMIN */
-        <div className="w-full bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center justify-between shrink-0 mb-2">
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={onBack} 
-              className="p-2.5 bg-slate-50 text-[#292667] rounded-xl hover:bg-[#ec2027] hover:text-white transition-all active:scale-90 border border-slate-100"
-            >
-              <ChevronLeft size={20} strokeWidth={4} />
-            </button>
-            <div>
-              <h2 className="text-lg font-black text-[#292667] uppercase tracking-tighter leading-none">Program Syllabus</h2>
-              <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Management View</p>
-            </div>
-          </div>
 
-          <div className="flex gap-2">
-             <button 
-                  onClick={() => isEditing ? handleSave() : setIsEditing(true)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-black text-[8px] uppercase tracking-widest shadow-lg transition-all border-b-4 border-black/10 active:scale-95 ${isEditing ? 'bg-[#00a651] text-white hover:bg-[#292667]' : 'bg-[#ec2027] text-white hover:bg-red-700'}`}
-              >
-                  {isEditing ? <><Save size={14} /> Finish</> : <><Edit3 size={14} /> Rename</>}
-              </button>
-              
-              {onEdit && (
-                <button 
-                  onClick={onEdit}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#292667] text-white rounded-xl font-black text-[8px] uppercase tracking-widest shadow-lg border-b-4 border-black/10 active:scale-95 hover:bg-blue-600"
-                >
-                  <Settings size={14} /> Architect Mode
-                </button>
-              )}
-          </div>
+        <div className="w-full h-[180px] md:h-[220px] rounded-[1.5rem] overflow-hidden relative shadow-xl border-b-[6px] border-[#3b82f6]">
+          <img 
+            src={course.thumbnail} 
+            className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105" 
+            alt="Program Banner" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#292667]/30 to-transparent"></div>
         </div>
-      )}
+      </div>
 
       {/* INFO SECTION */}
       <div className="max-w-[1000px] mx-auto w-full px-2">
-        <div className={`bg-white rounded-[1.5rem] p-5 md:p-6 shadow-md border border-slate-100 relative overflow-hidden z-20 ${!isMainAdmin ? '-mt-10' : 'mt-0'}`}>
+        <div className={`bg-white rounded-[1.5rem] p-5 md:p-6 shadow-md border border-slate-100 relative overflow-hidden z-20 -mt-10`}>
           <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
           
           <div className="relative z-10 space-y-3">
@@ -198,38 +147,12 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
                     {course.level}
                   </span>
                 </div>
-
-                {isEditing ? (
-                  <div className="space-y-2 animate-in slide-in-from-top-1">
-                     <div className="space-y-1">
-                        <label className="text-[7px] font-black text-slate-400 uppercase tracking-widest ml-1">Rename Program</label>
-                        <input 
-                          type="text" 
-                          className="w-full bg-slate-50 border-2 border-indigo-50 rounded-lg px-3 py-1.5 text-lg font-black text-[#292667] uppercase outline-none focus:border-[#3b82f6] transition-all"
-                          value={editedName}
-                          onChange={(e) => setEditedName(e.target.value)}
-                        />
-                     </div>
-                     <div className="space-y-1">
-                        <label className="text-[7px] font-black text-slate-400 uppercase tracking-widest ml-1">Description</label>
-                        <textarea 
-                          className="w-full bg-slate-50 border-2 border-indigo-50 rounded-lg px-3 py-1.5 text-[10px] font-bold text-slate-600 uppercase outline-none focus:border-[#3b82f6] transition-all resize-none"
-                          rows={2}
-                          value={editedDescription}
-                          onChange={(e) => setEditedDescription(e.target.value)}
-                        />
-                     </div>
-                  </div>
-                ) : (
-                  <>
-                    <h1 className="text-xl md:text-2xl font-black text-[#292667] uppercase tracking-tighter leading-none">
-                      {course.name}
-                    </h1>
-                    <p className="text-xs text-slate-500 font-bold leading-relaxed uppercase tracking-tight max-w-xl">
-                      {course.description || "Official Digital Information Resources curriculum module designed for the next generation of digital pioneers."}
-                    </p>
-                  </>
-                )}
+                <h1 className="text-xl md:text-2xl font-black text-[#292667] uppercase tracking-tighter leading-none">
+                  {course.name}
+                </h1>
+                <p className="text-xs text-slate-500 font-bold leading-relaxed uppercase tracking-tight max-w-xl">
+                  {course.description || "Official Digital Information Resources curriculum module designed for the next generation of digital pioneers."}
+                </p>
               </div>
 
               {canEnroll && onEnroll && (
@@ -238,7 +161,7 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
                   className="group/enroll px-5 py-2.5 bg-[#ec2027] hover:bg-[#292667] text-white rounded-xl font-black text-[10px] uppercase tracking-[0.1em] shadow-lg transition-all active:scale-95 flex items-center gap-2 border-b-4 border-black/10 shrink-0 self-center md:self-end"
                 >
                    <Rocket size={14} strokeWidth={3} className="group-hover/enroll:translate-x-1 group-hover/enroll:-translate-y-1 transition-transform" /> 
-                   Join
+                   Join Program
                 </button>
               )}
             </div>
@@ -254,7 +177,7 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
                 </div>
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck size={14} className="text-[#3b82f6]" />
-                  <span className="text-[9px] font-black text-[#292667] uppercase">Global Badge</span>
+                  <span className="text-[9px] font-black text-[#292667] uppercase">Global Badge Verified</span>
                 </div>
             </div>
           </div>
@@ -264,12 +187,12 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
       {/* ROADMAP SECTION */}
       <div className="max-w-[1000px] mx-auto w-full px-2">
         <div className="bg-white rounded-[1.5rem] border border-slate-100 shadow-lg flex flex-col overflow-hidden">
-          <div className="p-4 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
+          <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/30">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 bg-red-50 text-[#ec2027] rounded-lg">
                     <Target size={16} strokeWidth={3} />
                 </div>
-                <h3 className="text-xs font-black text-[#292667] uppercase tracking-widest">Syllabus Matrix</h3>
+                <h3 className="text-xs font-black text-[#292667] uppercase tracking-widest">Program Roadmap</h3>
               </div>
               <div className="px-2 py-0.5 bg-white rounded border border-slate-100">
                 <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">{course.modules.length} Modules</span>
@@ -322,7 +245,7 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
                 <Star size={12} className="text-[#ec2027] fill-current" />
                 <span className="text-[7px] font-black text-[#292667] uppercase tracking-widest">Rewards Enabled</span>
               </div>
-              <p className="text-[7px] font-black text-slate-300 uppercase tracking-widest">Payload Rev: 3.2.0</p>
+              <p className="text-[7px] font-black text-slate-300 uppercase tracking-widest">DIR-Matrix v3.2.0</p>
           </div>
         </div>
       </div>

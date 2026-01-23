@@ -37,7 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
       case UserRole.TEACHER:
         return "Welcome Jane Smith";
       case UserRole.STUDENT:
-        return "Welcome Timmy Lee";
+        return "Welcome Jane Smith";
       default:
         return "Welcome User";
     }
@@ -59,7 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
     { id: View.REPORTS, label: 'Reports', icon: BarChart3, category: 'reports' },
     { id: View.TESTS, label: 'Exams', icon: Zap, category: 'courses' },
     { id: View.ROLES_PERMISSIONS, label: 'Access', icon: ShieldCheck, category: 'accounts' },
-    { id: View.RESOURCES, label: 'Library', icon: FileSearch, category: 'resources' },
+    { id: View.RESOURCES, label: 'Student Library', icon: FileSearch, category: 'resources' },
     { id: View.EDIT_CERTIFICATES, label: 'Branding', icon: Award, category: 'certificates' },
     { id: View.ACCOUNT_CREATION, label: 'Accounts', icon: UserPlus, category: 'accounts' },
   ].filter(item => {
@@ -70,7 +70,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
     { id: View.MY_CLASSES, label: 'Courses', icon: BookOpen, category: 'accounts' },
     { id: View.REPORTS, label: 'Reports', icon: BarChart3, category: 'reports' },
     { id: View.TESTS, label: 'Exams', icon: ClipboardCheck, category: 'courses' },
-    { id: View.RESOURCES, label: 'Assets', icon: FileSearch, category: 'resources' },
+    { id: View.RESOURCES, label: 'Student Hub', icon: FileSearch, category: 'resources' },
     { id: View.CERTIFICATES, label: 'Awards', icon: Award, category: 'certificates' },
   ].filter(item => checkPermission(item.category as any, 'view'));
 
@@ -81,9 +81,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
       {isOpen && <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[45] lg:hidden" onClick={onClose} />}
       <div className={`fixed lg:static inset-y-0 left-0 w-64 bg-white text-[#304B9E] flex flex-col border-r border-slate-100 z-50 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         <div className="p-6 flex-1 flex flex-col overflow-hidden">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 px-2">
-            {getWelcomeMessage()}
-          </p>
+          <div className="flex items-center justify-between lg:block mb-6">
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">
+              {getWelcomeMessage()}
+            </p>
+            <button onClick={onClose} className="lg:hidden p-2 text-slate-400">
+               <X size={20} />
+            </button>
+          </div>
           <nav className="space-y-1 overflow-y-auto scrollbar-hide">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -93,7 +98,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
               return (
                 <button
                   key={item.id}
-                  onClick={() => onViewChange(item.id)}
+                  onClick={() => { onViewChange(item.id); if (onClose) onClose(); }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                     isActive ? 'bg-[#304B9E] text-white font-bold shadow-lg shadow-[#304B9E]/20' : 'text-slate-500 hover:bg-slate-50 hover:text-[#304B9E]'
                   }`}

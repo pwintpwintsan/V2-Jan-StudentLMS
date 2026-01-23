@@ -11,7 +11,7 @@ import { GradesView } from './components/views/GradesView.tsx';
 import { ReportsView } from './components/views/ReportsView.tsx';
 import { CertificatesView } from './components/views/CertificatesView.tsx';
 import { TestsView } from './components/views/TestsView.tsx';
-import { TeachingResourcesView } from './components/views/TeachingResourcesView.tsx';
+import { LearningResourcesView } from './components/views/TeachingResourcesView.tsx';
 import { ClassDetailView } from './components/views/ClassDetailView.tsx';
 import { StudentDetailView } from './components/views/StudentDetailView.tsx';
 import { StudentDashboardView } from './components/views/StudentDashboardView.tsx';
@@ -101,7 +101,6 @@ const App: React.FC = () => {
                   onEnterClass={(id) => { setSelectedClassId(id); setCurrentView(View.CLASS_DETAIL); }}
                   onEnterCenter={(id) => { setSelectedCenterId(id); setCurrentView(View.CENTER_DETAIL); }}
                   onEnterCourse={(id) => { setSelectedCourseId(id); setCurrentView(View.PROGRAM_SYLLABUS); }}
-                  onEditCourse={(id) => { setSelectedCourseId(id); setCurrentView(View.COURSES_ADMIN); }}
                   onAddBranch={() => setCurrentView(View.REGISTER_BRANCH)}
                 />;
       case View.CLASSES:
@@ -155,7 +154,7 @@ const App: React.FC = () => {
       case View.TESTS:
         return <TestsView checkPermission={checkPermission} />;
       case View.RESOURCES:
-        return <TeachingResourcesView checkPermission={checkPermission} />;
+        return <LearningResourcesView checkPermission={checkPermission} />;
       case View.COURSES_ADMIN:
         return <CoursesAdminView 
                   initialCourseId={selectedCourseId}
@@ -183,12 +182,11 @@ const App: React.FC = () => {
                                     courseId={selectedCourseId} 
                                     onBack={() => setCurrentView(View.MY_CLASSES)}
                                     onEnroll={() => { setCurrentOrder({ id: 'NEW-' + Date.now(), courseId: selectedCourseId, courseName: 'New Program Enrollment', branchId: 'sch1', branchName: 'Downtown Branch', seats: 10, pricePerSeat: 50000, totalAmount: 500000, status: 'pending-approval', date: new Date().toISOString(), requesterName: 'Jane Smith' }); setCurrentView(View.CHECKOUT); }}
-                                    onEdit={() => { setCurrentView(View.COURSES_ADMIN); }}
                                     activeRole={activeRole}
                                   /> : null;
       case View.ACCOUNT_PROFILE:
         return <AccountProfileView 
-                  user={activeRole === UserRole.STUDENT ? { name: 'Timmy Lee', id: '1000001', role: 'Student', hub: 'Downtown Branch', level: 'Course A' } : { name: 'Jane Smith', id: 'T1234567', role: 'Teacher', hub: 'Downtown Branch', level: 'N/A' }} 
+                  user={activeRole === UserRole.STUDENT ? { name: 'Jane Smith', id: '1000001', role: 'Student', hub: 'Downtown Branch', level: 'Course A' } : { name: 'Jane Smith', id: 'T1234567', role: 'Teacher', hub: 'Downtown Branch', level: 'N/A' }} 
                   onBack={() => setCurrentView(activeRole === UserRole.STUDENT ? View.STUDENT_DASHBOARD : View.MY_CLASSES)} 
                 />;
       default:
@@ -221,7 +219,7 @@ const App: React.FC = () => {
             onClose={() => setIsSidebarOpen(false)}
           />
         )}
-        <main className="flex-1 overflow-hidden p-4 md:p-8 bg-slate-50 relative">
+        <main className="flex-1 overflow-hidden p-3 md:p-6 lg:p-8 bg-slate-50 relative">
           {renderView()}
         </main>
       </div>

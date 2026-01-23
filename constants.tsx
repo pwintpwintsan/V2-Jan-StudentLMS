@@ -18,9 +18,9 @@ export const MOCK_SCHOOLS: School[] = [
     lng: -122.4194,
     type: 'HQ',
     approvedCourseIds: ['course-a', 'course-b'],
-    description: "Our flagship learning center located in the heart of the city. We focus on bridging the gap between traditional education and future tech. This hub serves as our primary training ground for Digital Information Resources research for middle school learners.",
+    description: "Our flagship learning center located in the heart of the city. We focus on bridging the gap between traditional education and future tech.",
     establishedDate: "2021-03-12",
-    facilities: ["Advanced Robotics Lab", "AI Compute Station", "Smart Presentation Hall", "Fiber Optic Backbone"]
+    facilities: ["Advanced Robotics Lab", "AI Compute Station", "Smart Presentation Hall"]
   },
   { 
     id: 'sch2', 
@@ -38,9 +38,9 @@ export const MOCK_SCHOOLS: School[] = [
     lng: -122.4148,
     type: 'Regional',
     approvedCourseIds: ['course-a'],
-    description: "A specialized regional academy focused on primary digital literacy. The Westside Academy provides a cozy yet high-tech environment for younger students to begin their journey with Digital Information Resources.",
+    description: "A specialized regional academy focused on primary digital literacy.",
     establishedDate: "2022-06-15",
-    facilities: ["Digital Literacy Suite", "LEGO Engineering Zone", "Outdoor Maker Space"]
+    facilities: ["Digital Literacy Suite", "Maker Space"]
   },
 ];
 
@@ -50,7 +50,7 @@ export const MOCK_COURSES: Course[] = [
     name: 'Starter: Digital Creators', 
     isPurchased: true, 
     thumbnail: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop',
-    description: "The ultimate foundational journey for young learners. Master the basics of digital logic, explore the secret world of computers, and create fun projects with Digital Information Resources.",
+    description: "Foundation journey for young learners. Master the basics of digital logic and computer science.",
     category: "Starter Program",
     level: "Foundation",
     duration: "20 Hours",
@@ -60,13 +60,7 @@ export const MOCK_COURSES: Course[] = [
         id: 'a_m1',
         title: 'Module 1: Binary Code Secret',
         lessons: [
-          { 
-            id: 'al1', 
-            title: 'Task 1: Thinking in 0s and 1s', 
-            type: 'video', 
-            content: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 
-            isPublished: true 
-          },
+          { id: 'al1', title: 'Task 1: Thinking in 0s and 1s', type: 'video', isPublished: true },
           { 
             id: 'al2', 
             title: 'Task 2: Logic Gates Quiz', 
@@ -77,64 +71,7 @@ export const MOCK_COURSES: Course[] = [
             ], 
             isPublished: true 
           },
-          { 
-            id: 'al_doc1', 
-            title: 'Task 3: Binary Cheat Sheet (PDF)', 
-            type: 'document', 
-            fileName: 'Binary_Guide_v1.pdf',
-            fileSize: '1.2 MB',
-            content: 'Download and print this guide to help you with your binary counting!',
-            isPublished: true 
-          }
-        ]
-      },
-      {
-        id: 'a_m2',
-        title: 'Module 2: Visual Code Architect',
-        lessons: [
-          { 
-            id: 'al4', 
-            title: 'Task 4: Drag, Drop, and Run', 
-            type: 'text', 
-            content: 'Visual blocks are the building bricks of code. In this lesson, we learn how to stack them to make things move!', 
-            isPublished: true 
-          },
-          { 
-            id: 'al5', 
-            title: 'Task 5: Sprite Movement Maze', 
-            type: 'video', 
-            isPublished: true 
-          },
-          {
-            id: 'al_assign1',
-            title: 'Task 6: My First Code Project',
-            type: 'assignment',
-            assignmentInstructions: 'Upload a screenshot or photo of the maze you completed in Scratch.',
-            isPublished: true
-          }
-        ]
-      },
-      {
-        id: 'a_m3',
-        title: 'Module 3: Advanced Hardware',
-        lessons: [
-          { 
-            id: 'al6', 
-            title: 'Task 7: Sensor Logic', 
-            type: 'quiz', 
-            quiz: [
-               { id: 'aq3', question: 'Which sensor detects distance?', options: ['Light Sensor', 'Ultrasonic Sensor', 'Sound Sensor', 'Touch Sensor'], correctAnswer: 1 }
-            ], 
-            isPublished: true 
-          },
-          {
-            id: 'al_doc2',
-            title: 'Task 8: Hardware Assembly Guide',
-            type: 'document',
-            fileName: 'Hardware_Manual_Starter.pdf',
-            fileSize: '3.5 MB',
-            isPublished: true
-          }
+          { id: 'al_doc1', title: 'Task 3: Binary Cheat Sheet', type: 'document', fileName: 'Binary_Guide.pdf', fileSize: '1.2 MB', isPublished: true }
         ]
       }
     ]
@@ -144,7 +81,7 @@ export const MOCK_COURSES: Course[] = [
     name: 'Robotics Masters Level 1', 
     isPurchased: true, 
     thumbnail: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=800&auto=format&fit=crop',
-    description: "Step into the future with physical computing. Learn to wire circuits, program micro-controllers, and build autonomous robots.",
+    description: "Physical computing and autonomous robots using advanced DIR modules.",
     category: "Robotics",
     level: "Advanced",
     duration: "30 Hours",
@@ -154,18 +91,7 @@ export const MOCK_COURSES: Course[] = [
         id: 'b_m1',
         title: 'Module 1: The Robots Brain',
         lessons: [
-          { id: 'bl1', title: 'Task 1: Intro to Controllers', type: 'video', isPublished: true },
-          { id: 'bl2', title: 'Task 2: Powering the Board', type: 'text', content: 'Safety first when working with batteries...', isPublished: true }
-        ]
-      },
-      {
-        id: 'b_m2',
-        title: 'Module 2: Circuitry and Flow',
-        lessons: [
-          { id: 'bl3', title: 'Task 3: The Glowing LED', type: 'assignment', assignmentInstructions: 'Wire an LED with a 220ohm resistor.', isPublished: true },
-          { id: 'bl4', title: 'Task 4: Resistance Quiz', type: 'quiz', quiz: [
-            { id: 'bq1', question: 'What unit measures resistance?', options: ['Volts', 'Ohms', 'Amps', 'Watts'], correctAnswer: 1 }
-          ], isPublished: true }
+          { id: 'bl1', title: 'Task 1: Intro to Controllers', type: 'video', isPublished: true }
         ]
       }
     ]
@@ -188,8 +114,8 @@ export const MOCK_STUDENTS: Student[] = [
   { 
     id: '1', 
     username: '1000001', 
-    firstName: 'Timmy', 
-    lastName: 'Lee', 
+    firstName: 'Jane', 
+    lastName: 'Smith', 
     finalGrade: 88, 
     passingRate: 80,
     attendance: 26, 

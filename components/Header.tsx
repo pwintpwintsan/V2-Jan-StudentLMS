@@ -17,14 +17,13 @@ export const LogoMark = ({ className = "" }: { className?: string }) => (
 );
 
 const Logo = () => (
-  <div className="flex items-center gap-3 py-1 select-none group">
-    <div className="w-10 h-10 bg-white border border-slate-100 rounded-2xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-105">
-      <LogoMark className="w-8 h-8" />
+  <div className="flex items-center gap-2 md:gap-3 py-1 select-none group shrink-0">
+    <div className="w-8 h-8 md:w-10 md:h-10 bg-white border border-slate-100 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-105">
+      <LogoMark className="w-6 h-6 md:w-8 md:h-8" />
     </div>
     <div className="flex flex-col min-w-0">
-      <span className="text-[8px] font-black text-[#304B9E] leading-none tracking-tight uppercase">Digital Information</span>
-      <span className="text-[8px] font-black text-[#304B9E] leading-none tracking-tight uppercase mt-0.5">Resources</span>
-      <span className="text-[7px] font-bold text-[#F05A28] uppercase tracking-widest leading-none mt-1">LEARNING HUB</span>
+      <span className="text-[7px] md:text-[8px] font-black text-[#304B9E] leading-none tracking-tight uppercase">Digital Information</span>
+      <span className="text-[6px] md:text-[7px] font-bold text-[#F05A28] uppercase tracking-widest leading-none mt-1">HUB</span>
     </div>
   </div>
 );
@@ -41,72 +40,67 @@ export const Header: React.FC<HeaderProps> = ({
   onLogin, 
   onProfileClick 
 }) => {
-  const userName = activeRole === UserRole.STUDENT ? 'Timmy Lee' : 'Jane Smith';
+  const userName = 'Jane Smith';
   const userSub = activeRole === UserRole.STUDENT ? 'Learner ID: 1000001' : teacherCode;
 
   return (
-    <header className="sticky top-0 z-[60] w-full bg-white border-b border-slate-100 flex items-center shrink-0 h-20 shadow-sm">
-      <div className="max-w-[1600px] mx-auto px-6 w-full flex justify-between items-center">
-        <div className="flex items-center gap-4">
+    <header className="sticky top-0 z-[60] w-full bg-white border-b border-slate-100 flex items-center shrink-0 h-16 md:h-20 shadow-sm">
+      <div className="max-w-[1600px] mx-auto px-4 md:px-6 w-full flex justify-between items-center">
+        <div className="flex items-center gap-2 md:gap-4">
           {isLoggedIn && (
             <button 
               onClick={onToggleSidebar}
-              className="lg:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-50 active:scale-95 transition-all"
+              className="lg:hidden p-1.5 md:p-2 rounded-lg text-slate-500 hover:bg-slate-50 active:scale-95 transition-all"
             >
-              {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+              {isSidebarOpen ? <X size={20} md:size={24} /> : <Menu size={20} md:size={24} />}
             </button>
           )}
           <Logo />
         </div>
 
         {isLoggedIn ? (
-          <div className="flex items-center space-x-6">
-            <div className="hidden md:flex items-center bg-slate-50 p-1.5 rounded-2xl border border-slate-100/50">
-              <button
-                className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl transition-all whitespace-nowrap bg-white shadow-sm text-[#304B9E]"
-              >
-                <GraduationCap size={16} strokeWidth={3} className="text-[#F05A28]" />
-                <span className="text-[11px] font-black uppercase tracking-tight">
+          <div className="flex items-center space-x-3 md:space-x-6">
+            <div className="hidden sm:flex items-center bg-slate-50 p-1 rounded-xl border border-slate-100/50">
+              <div className="flex items-center gap-2 px-3 py-1.5 md:px-5 md:py-2.5 rounded-lg md:rounded-xl transition-all whitespace-nowrap bg-white shadow-sm text-[#304B9E]">
+                <GraduationCap size={14} md:size={16} strokeWidth={3} className="text-[#F05A28]" />
+                <span className="text-[9px] md:text-[11px] font-black uppercase tracking-tight">
                   Jane Smith
                 </span>
-              </button>
+              </div>
             </div>
 
-            <div className="flex items-center gap-4 pl-4 border-l border-slate-100">
+            <div className="flex items-center gap-2 md:gap-4 pl-2 md:pl-4 border-l border-slate-100">
               <button 
                 onClick={onProfileClick}
-                className="group flex items-center gap-3 text-right hover:bg-slate-50 p-2 rounded-2xl transition-all"
+                className="group flex items-center gap-2 md:gap-3 text-right hover:bg-slate-50 p-1.5 md:p-2 rounded-xl md:rounded-2xl transition-all"
               >
                 <div className="hidden lg:block">
-                  <p className="text-[11px] font-black text-[#304B9E] uppercase leading-none group-hover:text-[#F05A28] transition-colors">{userName}</p>
-                  <p className="text-[8px] text-slate-400 font-bold mt-1 uppercase tracking-widest">{userSub}</p>
+                  <p className="text-[10px] md:text-[11px] font-black text-[#304B9E] uppercase leading-none group-hover:text-[#F05A28] transition-colors">{userName}</p>
+                  <p className="text-[6px] md:text-[8px] text-slate-400 font-bold mt-1 uppercase tracking-widest">{userSub}</p>
                 </div>
                 
-                <div className="relative">
-                  <div className="w-11 h-11 rounded-2xl bg-slate-100 border-2 border-white shadow-lg overflow-hidden group-hover:ring-4 ring-[#F05A28]/20 transition-all">
-                    <img src={`https://picsum.photos/seed/${userName}/64`} className="w-full h-full object-cover" alt="" />
-                  </div>
-                  <div className="absolute -bottom-1 -right-1 bg-[#304B9E] text-white p-1.5 rounded-lg shadow-lg border-2 border-white">
-                    <Camera size={10} strokeWidth={3} />
+                <div className="relative shrink-0">
+                  <div className="w-8 h-8 md:w-11 md:h-11 rounded-lg md:rounded-2xl bg-slate-100 border-2 border-white shadow-lg overflow-hidden group-hover:ring-4 ring-[#F05A28]/20 transition-all">
+                    <img src={`https://picsum.photos/seed/Jane/64`} className="w-full h-full object-cover" alt="" />
                   </div>
                 </div>
               </button>
 
               <button 
                 onClick={onLogout}
-                className="p-3 text-slate-300 hover:text-red-500 transition-all bg-slate-50 rounded-xl hover:bg-red-50 hover:shadow-inner active:scale-95"
+                className="p-2 md:p-3 text-slate-300 hover:text-red-500 transition-all bg-slate-50 rounded-lg md:rounded-xl hover:bg-red-50 hover:shadow-inner active:scale-95"
                 title="Sign Out"
               >
-                <LogOut size={20} strokeWidth={3} />
+                <LogOut size={16} md:size={20} strokeWidth={3} />
               </button>
             </div>
           </div>
         ) : (
           <button 
             onClick={onLogin}
-            className="flex items-center gap-2 px-8 py-3 bg-[#304B9E] text-white rounded-2xl font-black text-[12px] uppercase tracking-widest hover:bg-[#F05A28] transition-all active:scale-95 shadow-lg shadow-[#304B9E]/20"
+            className="flex items-center gap-2 px-6 md:px-8 py-2 md:py-3 bg-[#304B9E] text-white rounded-lg md:rounded-2xl font-black text-[10px] md:text-[12px] uppercase tracking-widest hover:bg-[#F05A28] transition-all active:scale-95 shadow-lg shadow-[#304B9E]/20"
           >
-            <LogIn size={16} /> Sign In
+            <LogIn size={14} md:size={16} /> <span className="hidden sm:inline">Sign In</span>
           </button>
         )}
       </div>
