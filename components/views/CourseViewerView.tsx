@@ -26,7 +26,10 @@ import {
   FileText, 
   X, 
   Trophy, 
-  ArrowRight 
+  ArrowRight,
+  Download,
+  FileUp,
+  Layout
 } from 'lucide-react';
 
 interface CourseViewerViewProps {
@@ -46,6 +49,7 @@ export const CourseViewerView: React.FC<CourseViewerViewProps> = ({ courseId, on
       case 'quiz': return <Zap size={size} strokeWidth={2.5} fill="currentColor" />;
       case 'assignment': return <Edit3 size={size} strokeWidth={2.5} />;
       case 'text': return <BookOpen size={size} strokeWidth={2.5} />;
+      case 'document': return <FileText size={size} strokeWidth={2.5} />;
       default: return <Play size={size} strokeWidth={2.5} />;
     }
   };
@@ -56,6 +60,7 @@ export const CourseViewerView: React.FC<CourseViewerViewProps> = ({ courseId, on
       case 'quiz': return 'bg-red-500 shadow-red-200';
       case 'assignment': return 'bg-rose-500 shadow-rose-200';
       case 'text': return 'bg-emerald-500 shadow-emerald-200';
+      case 'document': return 'bg-teal-500 shadow-teal-200';
       default: return 'bg-slate-500 shadow-slate-200';
     }
   };
@@ -185,6 +190,30 @@ export const CourseViewerView: React.FC<CourseViewerViewProps> = ({ courseId, on
                     </div>
                   )}
 
+                  {activeLesson.type === 'document' && (
+                    <div className="max-w-2xl mx-auto py-10 space-y-8 animate-in slide-in-from-bottom-4">
+                        <div className="bg-slate-50 rounded-[3rem] p-10 border-4 border-dashed border-slate-200 text-center flex flex-col items-center">
+                            <div className="p-6 bg-white rounded-3xl shadow-xl mb-6 text-teal-500">
+                                <FileText size={64} strokeWidth={1.5} />
+                            </div>
+                            <h4 className="text-2xl font-black text-[#292667] uppercase tracking-tighter mb-2">{activeLesson.fileName || 'Resource.pdf'}</h4>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8">{activeLesson.fileSize || 'Unknown Size'} • Portable Document Format</p>
+                            
+                            <div className="bg-white/60 p-6 rounded-2xl w-full mb-8 text-left border border-white">
+                                <p className="text-xs text-slate-500 font-bold leading-relaxed uppercase tracking-tight">
+                                    {activeLesson.content || 'This resource contains essential diagrams and notes to support your learning journey. Please download or view it before proceeding to the quiz.'}
+                                </p>
+                            </div>
+
+                            <button 
+                                className="px-10 py-5 bg-[#292667] text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:bg-[#00a651] transition-all flex items-center gap-3 border-b-6 border-black/10 active:scale-95 group"
+                            >
+                                <Download size={20} className="group-hover:translate-y-1 transition-transform" /> View Document
+                            </button>
+                        </div>
+                    </div>
+                  )}
+
                   {activeLesson.type === 'quiz' && (
                     <div className="max-w-3xl mx-auto space-y-8 py-6">
                        {!isSubmitted ? (
@@ -198,9 +227,11 @@ export const CourseViewerView: React.FC<CourseViewerViewProps> = ({ courseId, on
                            </div>
 
                            <div className="bg-white p-6 rounded-[2rem] border-2 border-slate-100 shadow-xl relative overflow-hidden">
-                              <p className="text-lg font-black text-[#292667] mb-8 text-center leading-tight">"Which of the following describes the correct logic state for an 'AND' gate with both inputs set to ON?"</p>
+                              <p className="text-lg font-black text-[#292667] mb-8 text-center leading-tight">
+                                 {activeLesson.quiz?.[0]?.question || "Which of the following describes the correct logic state for an 'AND' gate with both inputs set to ON?"}
+                              </p>
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                 {['State is OFF', 'State is ON', 'State is UNDEFINED', 'State is INVERTED'].map((opt, i) => {
+                                 {(activeLesson.quiz?.[0]?.options || ['State is OFF', 'State is ON', 'State is UNDEFINED', 'State is INVERTED']).map((opt, i) => {
                                    const color = optionColors[i % optionColors.length];
                                    const isSelected = quizSelection === i;
                                    return (
@@ -253,12 +284,14 @@ export const CourseViewerView: React.FC<CourseViewerViewProps> = ({ courseId, on
                                  <ClipboardList size={28} />
                               </div>
                               <h4 className="text-xl font-black text-[#292667] uppercase tracking-tighter mb-2">Creative Workshop</h4>
-                              <p className="text-[10px] font-bold text-slate-600 leading-relaxed max-w-md mx-auto uppercase tracking-tight">Complete the project and upload your results below.</p>
+                              <p className="text-[10px] font-bold text-slate-600 leading-relaxed max-w-md mx-auto uppercase tracking-tight">
+                                 {activeLesson.assignmentInstructions || 'Complete the project and upload your results below.'}
+                              </p>
                            </div>
                            <div className="p-8 bg-slate-50 rounded-[2.5rem] border-2 border-white shadow-inner flex flex-col items-center gap-4 text-center relative overflow-hidden">
                               <p className="text-[8px] font-black text-slate-300 uppercase tracking-[0.3em]">Accepting: PDF, PNG, JPG</p>
                               <button onClick={handleFileUpload} className="px-8 py-4 bg-[#292667] text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-lg hover:bg-[#00a651] transition-all border-b-4 border-black/10 active:scale-95 flex items-center gap-3 group">
-                                 <Send size={18} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
+                                 <FileUp size={18} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
                                  Select File & Upload
                               </button>
                            </div>

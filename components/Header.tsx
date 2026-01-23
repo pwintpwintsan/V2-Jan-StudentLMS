@@ -3,19 +3,6 @@ import React from 'react';
 import { Menu, X, GraduationCap, LogOut, LogIn, Camera } from 'lucide-react';
 import { UserRole } from '../types.ts';
 
-interface HeaderProps {
-  schoolName: string;
-  teacherCode: string;
-  activeRole: UserRole;
-  isLoggedIn: boolean;
-  isSidebarOpen: boolean;
-  onToggleSidebar: () => void;
-  onRoleChange: (role: UserRole) => void;
-  onLogout: () => void;
-  onLogin: () => void;
-  onProfileClick: () => void;
-}
-
 export const LogoMark = ({ className = "" }: { className?: string }) => (
   <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="36" y="25" width="4" height="4" fill="#304B9E" />
@@ -35,8 +22,8 @@ const Logo = () => (
       <LogoMark className="w-8 h-8" />
     </div>
     <div className="flex flex-col min-w-0">
-      <span className="text-[10px] font-black text-[#304B9E] leading-none tracking-tight uppercase">U Book Store</span>
-      <span className="text-[10px] font-black text-[#304B9E] leading-none tracking-tight uppercase">Management</span>
+      <span className="text-[8px] font-black text-[#304B9E] leading-none tracking-tight uppercase">Digital Information</span>
+      <span className="text-[8px] font-black text-[#304B9E] leading-none tracking-tight uppercase mt-0.5">Resources</span>
       <span className="text-[7px] font-bold text-[#F05A28] uppercase tracking-widest leading-none mt-1">LEARNING HUB</span>
     </div>
   </div>
@@ -126,3 +113,16 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
+
+interface HeaderProps {
+  schoolName: string;
+  teacherCode: string;
+  activeRole: UserRole;
+  isLoggedIn: boolean;
+  isSidebarOpen: boolean;
+  onToggleSidebar: () => void;
+  onRoleChange: (role: UserRole) => void;
+  onLogout: () => void;
+  onLogin: () => void;
+  onProfileClick: () => void;
+}

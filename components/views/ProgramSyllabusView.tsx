@@ -15,7 +15,6 @@ import {
   Edit3,
   Layers,
   ChevronRight,
-  Eye,
   X,
   FileCheck,
   Star,
@@ -24,7 +23,8 @@ import {
   Save,
   Type,
   FileText,
-  Settings
+  Settings,
+  Eye
 } from 'lucide-react';
 
 interface ProgramSyllabusViewProps {
@@ -59,10 +59,11 @@ const TaskDetailModal = ({ lesson, onClose }: { lesson: Lesson, onClose: () => v
               <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-[#292667]">
                  {lesson.type === 'video' ? <MonitorPlay size={24} /> : 
                   lesson.type === 'quiz' ? <Zap size={24} fill="currentColor" /> : 
-                  lesson.type === 'assignment' ? <Edit3 size={24} /> : <BookOpen size={24} />}
+                  lesson.type === 'assignment' ? <Edit3 size={24} /> : 
+                  lesson.type === 'document' ? <FileText size={24} /> : <BookOpen size={24} />}
               </div>
               <div>
-                 <span className="text-[8px] font-black text-[#3b82f6] uppercase tracking-widest mb-0.5 block">Type: {lesson.type}</span>
+                 <span className="text-[8px] font-black text-[#3b82f6] uppercase tracking-widest mb-0.5 block">Type: {lesson.type.toUpperCase()}</span>
                  <h3 className="text-lg font-black text-[#292667] uppercase tracking-tight leading-none">{lesson.title}</h3>
               </div>
            </div>
@@ -72,7 +73,7 @@ const TaskDetailModal = ({ lesson, onClose }: { lesson: Lesson, onClose: () => v
                  <Layers size={10} className="text-[#ec2027]" /> Context
               </h4>
               <p className="text-xs text-slate-600 font-bold leading-relaxed uppercase tracking-tight">
-                 {lesson.content || lesson.assignmentInstructions || "This curriculum node focuses on core competencies required for foundational mastery."}
+                 {lesson.type === 'document' ? `Download the file ${lesson.fileName || 'Resource'} to complete this activity.` : (lesson.content || lesson.assignmentInstructions || "This curriculum node focuses on core competencies required for foundational mastery.")}
               </p>
            </div>
         </div>
@@ -114,6 +115,7 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
       case 'video': return <MonitorPlay size={12} className="text-indigo-500" />;
       case 'quiz': return <Zap size={12} className="text-amber-500" fill="currentColor" />;
       case 'assignment': return <Edit3 size={12} className="text-rose-500" />;
+      case 'document': return <FileText size={12} className="text-teal-500" />;
       case 'exam': return <FileCheck size={12} className="text-[#ec2027]" />;
       default: return <BookOpen size={12} className="text-emerald-500" />;
     }
@@ -123,7 +125,7 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
     <div className="h-full flex flex-col gap-4 overflow-y-auto scrollbar-hide animate-in fade-in duration-500 pb-12">
       {selectedLesson && <TaskDetailModal lesson={selectedLesson} onClose={() => setSelectedLesson(null)} />}
 
-      {/* 1. HEADER LOGIC: Conditional Banner vs Compact Admin Header */}
+      {/* Conditional Header: Banner vs Compact Admin Header */}
       {!isMainAdmin ? (
         <div className="w-full relative group shrink-0">
           <div className="absolute top-4 left-4 z-30 flex gap-2">
@@ -145,7 +147,7 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
           </div>
         </div>
       ) : (
-        /* COMPACT HEADER FOR MAIN CENTER ADMIN - Yellow to Red */
+        /* COMPACT HEADER FOR MAIN CENTER ADMIN */
         <div className="w-full bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center justify-between shrink-0 mb-2">
           <div className="flex items-center gap-4">
             <button 
@@ -180,7 +182,7 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
         </div>
       )}
 
-      {/* 2. TEXTS SECTION - Yellow to Red */}
+      {/* INFO SECTION */}
       <div className="max-w-[1000px] mx-auto w-full px-2">
         <div className={`bg-white rounded-[1.5rem] p-5 md:p-6 shadow-md border border-slate-100 relative overflow-hidden z-20 ${!isMainAdmin ? '-mt-10' : 'mt-0'}`}>
           <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
@@ -224,7 +226,7 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
                       {course.name}
                     </h1>
                     <p className="text-xs text-slate-500 font-bold leading-relaxed uppercase tracking-tight max-w-xl">
-                      {course.description || "Official U Book Store curriculum module designed for the next generation of digital pioneers."}
+                      {course.description || "Official Digital Information Resources curriculum module designed for the next generation of digital pioneers."}
                     </p>
                   </>
                 )}
@@ -259,7 +261,7 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
         </div>
       </div>
 
-      {/* 3. ROADMAP SECTION - COMPACTED CARDS */}
+      {/* ROADMAP SECTION */}
       <div className="max-w-[1000px] mx-auto w-full px-2">
         <div className="bg-white rounded-[1.5rem] border border-slate-100 shadow-lg flex flex-col overflow-hidden">
           <div className="p-4 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
@@ -287,14 +289,6 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
                           <p className="text-[7px] font-black text-slate-400 uppercase tracking-widest mt-0.5">{mod.lessons.length} Core Activities</p>
                         </div>
                       </div>
-                      {isMainAdmin && onEdit && (
-                        <button 
-                          onClick={onEdit}
-                          className="p-2 bg-slate-50 text-slate-300 hover:text-[#3b82f6] rounded-lg transition-all"
-                        >
-                          <Edit3 size={14} />
-                        </button>
-                      )}
                     </div>
 
                     <div className="ml-4 pl-6 border-l border-dashed border-slate-100 space-y-2">
@@ -310,52 +304,14 @@ export const ProgramSyllabusView: React.FC<ProgramSyllabusViewProps> = ({ course
                                 </div>
                                 <div>
                                   <span className="text-xs font-black text-[#292667] uppercase tracking-tight truncate block group-hover:text-[#3b82f6] transition-colors">{lesson.title}</span>
-                                  <span className="text-[6px] font-black text-slate-300 uppercase tracking-widest">{lesson.type}</span>
+                                  <span className="text-[6px] font-black text-slate-300 uppercase tracking-widest">{lesson.type.toUpperCase()}</span>
                                 </div>
                             </div>
                             <div className="flex items-center gap-2">
-                                {isMainAdmin && onEdit && (
-                                  <button 
-                                    onClick={(e) => { e.stopPropagation(); onEdit(); }}
-                                    className="p-1.5 opacity-0 group-hover:opacity-100 bg-blue-50 text-[#3b82f6] rounded-md transition-all hover:bg-blue-600 hover:text-white"
-                                  >
-                                    <Edit3 size={10} />
-                                  </button>
-                                )}
                                 <ChevronRight size={14} className="text-slate-200 group-hover:text-[#292667] group-hover:translate-x-1 transition-all" strokeWidth={3} />
                             </div>
                           </div>
                       ))}
-
-                      {/* Module Assessment Item - Compacted */}
-                      <div 
-                        onClick={() => setSelectedLesson({ id: `exam-${mod.id}`, title: `${mod.title} Assessment`, type: 'quiz' })}
-                        className="flex items-center justify-between p-3 rounded-xl bg-red-50/20 border border-dashed border-[#ec2027]/20 hover:border-[#ec2027] hover:bg-white transition-all group cursor-pointer mt-4 relative overflow-hidden"
-                      >
-                          <div className="flex items-center gap-3 min-w-0 relative z-10">
-                            <div className="w-8 h-8 rounded-lg bg-white shadow flex items-center justify-center text-[#ec2027] group-hover:rotate-6 transition-all border-b border-black/5">
-                                <FileCheck size={16} strokeWidth={3} />
-                            </div>
-                            <div>
-                                <span className="text-xs font-black text-[#ec2027] uppercase tracking-tighter leading-none block">Performance Check</span>
-                                <p className="text-[7px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Automated Assessment</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2 relative z-10">
-                            {isMainAdmin && onEdit && (
-                              <button 
-                                onClick={(e) => { e.stopPropagation(); onEdit(); }}
-                                className="p-1.5 opacity-0 group-hover:opacity-100 bg-red-100 text-[#ec2027] rounded-md transition-all hover:bg-[#ec2027] hover:text-white"
-                              >
-                                <Edit3 size={10} />
-                              </button>
-                            )}
-                            <div className="hidden sm:block px-1.5 py-0.5 bg-[#ec2027] text-white text-[6px] font-black uppercase rounded shadow-md tracking-widest">
-                                FINAL
-                            </div>
-                            <ArrowRight size={16} className="text-[#ec2027] group-hover:translate-x-2 transition-transform" strokeWidth={3} />
-                          </div>
-                      </div>
                     </div>
                 </div>
               ))}

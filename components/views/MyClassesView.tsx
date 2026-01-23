@@ -98,7 +98,7 @@ export const MyClassesView: React.FC<MyClassesViewProps> = ({ teacher, classes, 
              <h2 className="text-xl md:text-2xl font-black leading-none tracking-tight uppercase">
                Course <span className="text-[#F05A28]">{isAdmin ? 'Library' : 'Portal'}</span>
              </h2>
-             <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mt-1">U Book Store Global Catalog</p>
+             <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mt-1">Digital Information Resources Global Catalog</p>
            </div>
         </div>
 

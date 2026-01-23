@@ -40,7 +40,7 @@ export interface QuizQuestion {
 export interface Lesson {
   id: string;
   title: string;
-  type: 'video' | 'text' | 'quiz' | 'assignment';
+  type: 'video' | 'text' | 'quiz' | 'assignment' | 'document';
   content?: string;
   quiz?: QuizQuestion[];
   assignmentInstructions?: string;
@@ -49,6 +49,8 @@ export interface Lesson {
   autoPassOnUpload?: boolean;
   isPublished?: boolean;
   isSample?: boolean;
+  fileName?: string;
+  fileSize?: string;
 }
 
 export interface Module {

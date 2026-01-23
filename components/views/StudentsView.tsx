@@ -35,7 +35,7 @@ export const StudentsView: React.FC<StudentsViewProps> = ({ onStudentClick, chec
            </div>
            <div>
              <h2 className="text-2xl md:text-3xl font-black leading-none tracking-tight uppercase">Learner <span className="text-[#fbee21]">Directory</span></h2>
-             <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mt-2">Central U Book Store database</p>
+             <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mt-2">Central Digital Information Resources database</p>
            </div>
         </div>
 

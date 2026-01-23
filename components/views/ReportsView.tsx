@@ -7,7 +7,6 @@ import {
   Award, 
   Loader2,
   ShieldCheck,
-  Zap,
   Target,
   ChevronRight,
   ClipboardList,
@@ -34,8 +33,6 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
 
   const performanceStats = [
     { title: 'Curriculum Mastery', value: '94%', color: 'text-emerald-500', bg: 'bg-emerald-50', icon: Target },
-    { title: 'Average Quiz Score', value: '88/100', color: 'text-[#3b82f6]', bg: 'bg-blue-50', icon: Zap },
-    { title: 'Overall Marks', value: '482/500', color: 'text-[#F05A28]', bg: 'bg-orange-50', icon: Award },
     { title: 'Completion Rate', value: '100%', color: 'text-indigo-500', bg: 'bg-indigo-50', icon: CheckCircle },
   ];
 
@@ -50,24 +47,24 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
   return (
     <div className="h-full flex flex-col gap-6 overflow-hidden animate-in fade-in duration-700">
       {/* Header Section */}
-      <div className="w-full bg-[#304B9E] rounded-[2.5rem] p-6 md:p-8 text-white shadow-xl border-b-[10px] border-[#F05A28] flex flex-col md:flex-row items-center justify-between gap-6 flex-shrink-0 relative overflow-hidden">
+      <div className="w-full bg-[#304B9E] rounded-[2.5rem] p-5 md:p-6 text-white shadow-xl border-b-[8px] border-[#F05A28] flex flex-col md:flex-row items-center justify-between gap-6 flex-shrink-0 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full -mr-24 -mt-24 blur-3xl"></div>
         <div className="flex items-center gap-6 relative z-10">
-           <div className="p-4 md:p-5 bg-[#F05A28] rounded-[1.5rem] text-[#304B9E] shadow-xl rotate-3">
-             <BarChart3 size={32} strokeWidth={3} />
+           <div className="p-3 md:p-4 bg-[#F05A28] rounded-[1.25rem] text-[#304B9E] shadow-xl rotate-3">
+             <BarChart3 size={24} strokeWidth={3} />
            </div>
            <div>
-             <h2 className="text-2xl md:text-3xl font-black leading-none tracking-tight uppercase">Individual <span className="text-[#F05A28]">Learner Report</span></h2>
-             <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mt-2">U Book Store Global Sync Hub</p>
+             <h2 className="text-lg md:text-xl font-black leading-none tracking-tight uppercase">Individual <span className="text-[#F05A28]">Learner Report</span></h2>
+             <p className="text-[8px] font-black uppercase tracking-widest text-white/40 mt-1.5">Digital Information Resources Global Sync Hub</p>
            </div>
         </div>
         
         <button 
           onClick={handleExport}
           disabled={isExporting}
-          className="px-8 py-3.5 bg-white/10 hover:bg-[#F05A28] text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all border border-white/20 active:scale-95 flex items-center gap-2 relative z-10 group"
+          className="px-6 py-2.5 bg-white/10 hover:bg-[#F05A28] text-white rounded-xl font-black text-[10px] uppercase tracking-widest transition-all border border-white/20 active:scale-95 flex items-center gap-2 relative z-10 group"
         >
-          {isExporting ? <Loader2 size={18} className="animate-spin" /> : <Download size={18} className="group-hover:translate-y-0.5 transition-transform" />}
+          {isExporting ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} className="group-hover:translate-y-0.5 transition-transform" />}
           {isExporting ? 'Generating...' : 'Export Results'}
         </button>
       </div>
@@ -118,8 +115,8 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
             </div>
           </div>
 
-          {/* Quick Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Quick Stats Grid - Only Mastery and Completion Rate */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {performanceStats.map((item, idx) => (
               <div key={idx} className="bg-white rounded-[2rem] p-6 shadow-lg border-2 border-slate-50 hover:border-[#304B9E]/10 transition-all group">
                 <div className={`${item.bg} ${item.color} w-11 h-11 rounded-2xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform`}>
@@ -133,14 +130,14 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
 
           {/* Performance Table Section */}
           <div className="bg-white rounded-[3rem] shadow-xl border border-slate-100 overflow-hidden flex flex-col">
-            <div className="p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div className="p-6 md:p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-[#304B9E] text-white rounded-2xl shadow-lg">
-                     <ClipboardList size={22} strokeWidth={3} />
+                  <div className="p-2.5 bg-[#304B9E] text-white rounded-xl shadow-lg">
+                     <ClipboardList size={18} strokeWidth={3} />
                   </div>
                   <div>
-                     <h4 className="text-xl font-black text-[#304B9E] uppercase tracking-tighter">Detailed Performance Matrix</h4>
-                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Full Curriculum Score History</p>
+                     <h4 className="text-base font-black text-[#304B9E] uppercase tracking-tight">Detailed Performance Matrix</h4>
+                     <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-1">Full Curriculum Score History</p>
                   </div>
                </div>
             </div>
@@ -182,13 +179,13 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
                           {row.score}
                         </span>
                       </td>
-                      <td className="px-6 py-5 text-center border-r border-slate-50">
+                      <td className="px-6 py-5 text-center border-r border-white/5">
                         <div className="flex items-center justify-center gap-1.5 text-emerald-600">
                            <Check size={14} strokeWidth={3} />
                            <span className="text-sm font-black">{row.correct}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-5 text-center border-r border-slate-50">
+                      <td className="px-6 py-5 text-center border-r border-white/5">
                         <div className="flex items-center justify-center gap-1.5 text-rose-600">
                            <CloseIcon size={14} strokeWidth={3} />
                            <span className="text-sm font-black">{row.incorrect}</span>
@@ -220,12 +217,12 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
           <div className="pt-4">
              <div className="bg-white rounded-[2.5rem] p-8 shadow-xl border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="flex items-center gap-6">
-                   <div className="w-16 h-16 bg-blue-50 text-[#304B9E] rounded-2xl flex items-center justify-center shadow-inner border border-blue-100">
-                      <Award size={32} strokeWidth={2.5} />
+                   <div className="w-14 h-14 bg-blue-50 text-[#304B9E] rounded-2xl flex items-center justify-center shadow-inner border border-blue-100">
+                      <Award size={28} strokeWidth={2.5} />
                    </div>
                    <div>
-                      <h4 className="text-xl font-black text-[#304B9E] uppercase tracking-tighter">Final Evaluation Status</h4>
-                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">Jane Smith is tracking at <span className="text-emerald-600">Distinction Level</span> for this term.</p>
+                      <h4 className="text-lg font-black text-[#304B9E] uppercase tracking-tight">Final Evaluation Status</h4>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Jane Smith is tracking at <span className="text-emerald-600">Distinction Level</span> for this term.</p>
                    </div>
                 </div>
                 <div className="flex items-center gap-3 bg-slate-50 px-6 py-4 rounded-2xl border border-slate-100">
@@ -237,7 +234,7 @@ export const ReportsView: React.FC<ReportsViewProps> = () => {
         </div>
       </div>
       
-      <p className="text-center text-[8px] font-black text-slate-300 uppercase tracking-[0.4em] mb-4">U Book Store Global Analytics • node_73434_jane • v2.4.6</p>
+      <p className="text-center text-[8px] font-black text-slate-300 uppercase tracking-[0.4em] mb-4">Digital Information Resources Global Analytics • node_73434_jane • v2.4.8</p>
     </div>
   );
 };
