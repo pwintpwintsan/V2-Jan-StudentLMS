@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { 
   FileText, 
@@ -101,7 +100,7 @@ export const LearningResourcesView: React.FC<LearningResourcesViewProps> = ({ ch
         <ResourceViewer resource={viewingResource} onClose={() => setViewingResource(null)} />
       )}
 
-      {/* Shrunk responsive header */}
+      {/* Header with updated title */}
       <div className="w-full bg-[#304B9E] rounded-xl p-3 md:p-5 text-white shadow-xl border-b-6 border-[#F05A28] flex flex-col md:flex-row items-center justify-between gap-4 flex-shrink-0 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
         <div className="flex items-center gap-3 relative z-10">
@@ -109,7 +108,7 @@ export const LearningResourcesView: React.FC<LearningResourcesViewProps> = ({ ch
              <FileSearch size={20} md:size={22} strokeWidth={3} />
            </div>
            <div>
-             <h2 className="text-lg md:text-xl font-black leading-none tracking-tight uppercase">Student <span className="text-[#F05A28]">Library</span></h2>
+             <h2 className="text-lg md:text-xl font-black leading-none tracking-tight uppercase">Learning Resources: <span className="text-[#F05A28]">Library</span></h2>
              <p className="text-[7px] md:text-[8px] font-black uppercase tracking-widest text-white/40 mt-1">Learning Resource Vault</p>
            </div>
         </div>

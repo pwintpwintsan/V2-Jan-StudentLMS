@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Award, 
@@ -58,7 +57,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
     { id: View.REPORTS, label: 'Reports', icon: BarChart3, category: 'reports' },
     { id: View.TESTS, label: 'Exams', icon: Zap, category: 'courses' },
     { id: View.ROLES_PERMISSIONS, label: 'Access', icon: ShieldCheck, category: 'accounts' },
-    { id: View.RESOURCES, label: 'Student Library', icon: FileSearch, category: 'resources' },
+    { id: View.RESOURCES, label: 'Learning Resources: Library', icon: FileSearch, category: 'resources' },
     { id: View.EDIT_CERTIFICATES, label: 'Branding', icon: Award, category: 'certificates' },
     { id: View.ACCOUNT_CREATION, label: 'Accounts', icon: UserPlus, category: 'accounts' },
   ].filter(item => {
@@ -69,7 +68,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onViewChange, act
     { id: View.MY_CLASSES, label: 'Courses', icon: BookOpen, category: 'accounts' },
     { id: View.REPORTS, label: 'Reports', icon: BarChart3, category: 'reports' },
     { id: View.TESTS, label: 'Exams', icon: ClipboardCheck, category: 'courses' },
-    { id: View.RESOURCES, label: 'Student Hub', icon: FileSearch, category: 'resources' },
+    { id: View.RESOURCES, label: 'Learning Resources: Library', icon: FileSearch, category: 'resources' },
     { id: View.CERTIFICATES, label: 'Awards', icon: Award, category: 'certificates' },
   ].filter(item => checkPermission(item.category as any, 'view'));
 
